@@ -2,7 +2,7 @@
 Desarrollo Web Integral 
 
 <h3>MATRIZ DE ROLES <h3>
-  ![image](https://github.com/PaolaPatlan/DesarrolloWebIntegral-Proyecto/assets/87114168/42c1dba1-1e90-4b53-8964-a8fa0ff6bd37)
+  (https://github.com/PaolaPatlan/DesarrolloWebIntegral-Proyecto/assets/87114168/42c1dba1-1e90-4b53-8964-a8fa0ff6bd37)
 
  <h3>TIPOS DE USUARIOS<h3>
    
