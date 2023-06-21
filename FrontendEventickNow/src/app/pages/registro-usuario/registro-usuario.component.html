@@ -1,0 +1,86 @@
+
+<mat-grid-list cols="1" rowHeight="100%" class="fondo">
+  <mat-grid-tile cols="2">
+    <mat-card [class.mat-elevation-z8]="true">
+      <mat-card-content id="matForm">
+        <h2 id="title">Únete a EventickNow</h2>
+        <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Nombre</mat-label>
+            <input type="text" formControlName="name" matInput />
+            <mat-error
+              *ngIf="baseForm.isValidField(registerForm.get('name'))"
+            >
+              {{ baseForm.getErrorMessage(registerForm.get("name")) }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Apellido</mat-label>
+            <input type="text" formControlName="lastname" matInput />
+            <mat-error
+              *ngIf="baseForm.isValidField(registerForm.get('lastname'))"
+            >
+              {{ baseForm.getErrorMessage(registerForm.get("lastname")) }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Tipo de usuario</mat-label>
+            <mat-select formControlName="typeUser">
+              <mat-option [value]=1>
+                Creador de eventos
+              </mat-option>
+              <mat-option [value]=2>
+                Usuario
+              </mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="baseForm.isValidField(registerForm.get('typeUser'))"
+            >
+              {{ baseForm.getErrorMessage(registerForm.get("typeUser")) }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Correo electronico</mat-label>
+            <input type="email" formControlName="email" matInput />
+            <mat-error
+              *ngIf="baseForm.isValidField(registerForm.get('email'))"
+            >
+              {{ baseForm.getErrorMessage(registerForm.get("email")) }}
+            </mat-error>
+          </mat-form-field>
+
+          
+
+
+          <mat-form-field class="full-width" appearance="outline" >
+            <mat-label>Contraseña</mat-label>
+            <input
+              [type]="'password'"
+              formControlName="password"
+              matInput
+              
+            />
+            <mat-error
+              *ngIf="baseForm.isValidField(registerForm.get('password'))"
+            >
+              {{ baseForm.getErrorMessage(registerForm.get("password")) }}
+            </mat-error>
+          </mat-form-field>
+
+          <button
+            type="submit"
+            mat-raised-button
+            color="primary"
+            id="btn"
+            [disabled]="!registerForm.valid"
+          >
+            Registrarme
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
