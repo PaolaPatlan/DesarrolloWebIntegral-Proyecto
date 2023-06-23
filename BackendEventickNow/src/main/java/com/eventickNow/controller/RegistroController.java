@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.eventickNow.model.dto.SingleResponse;
 import com.eventickNow.model.entity.UsuarioEntity;
 import com.eventickNow.service.RegistroService;
-import com.eventickNow.service.UsuarioService;     
+import com.eventickNow.service.UsuarioService;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -33,8 +33,8 @@ public class RegistroController {
 	@Autowired
     private RegistroService registroService;
 
-    @PostMapping(path = "/cliente", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SingleResponse<UsuarioEntity>> registerUser(@ModelAttribute UsuarioEntity user) throws MessagingException {
+    @PostMapping(path = "/cliente", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SingleResponse<UsuarioEntity>> registerUser(@RequestBody UsuarioEntity user) throws MessagingException {
     	
     	SingleResponse<UsuarioEntity> response = new SingleResponse<>();
     	response = registroService.registerUser(user);

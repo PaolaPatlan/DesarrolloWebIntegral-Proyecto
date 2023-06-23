@@ -15,7 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.eventickNow.exceptions.BusinessException;
@@ -37,8 +37,8 @@ public class RegistroService implements IRegistroService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+//	@Autowired
+//	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	private IUsuarioRepository clienteRepository;
@@ -87,6 +87,7 @@ public class RegistroService implements IRegistroService {
 		String randomCode = RandomString.make(64);
 
 		Optional<UsuarioEntity> clienteO = Optional.empty();
+		
 		try {
 			clienteO = clienteRepository.findByCorreoElectronicoIgnoreCase(clienteDireccion.getCorreoElectronico());
 		} catch (DataAccessException ex) {
@@ -102,22 +103,22 @@ public class RegistroService implements IRegistroService {
 
 		UsuarioEntity clienteEntity = new UsuarioEntity();
 
-		if (clienteDireccion.getMultipartFile().isEmpty() || clienteDireccion.getMultipartFile() != null) {
-			clienteEntity.setNombreImagen(clienteDireccion.getMultipartFile().getOriginalFilename());
-			clienteEntity.setTipoImagen(clienteDireccion.getMultipartFile().getContentType());
-			try {
-				clienteEntity.setBytesImagen(clienteDireccion.getMultipartFile().getBytes());
-			} catch (IOException e) {
-				throw new BusinessException(HttpStatus.BAD_REQUEST, "Error al procesar la imagen en el sistema.");
-			}
-		}
+//		if (clienteDireccion.getMultipartFile().isEmpty() || clienteDireccion.getMultipartFile() != null) {
+//			clienteEntity.setNombreImagen(clienteDireccion.getMultipartFile().getOriginalFilename());
+//			clienteEntity.setTipoImagen(clienteDireccion.getMultipartFile().getContentType());
+//			try {
+//				clienteEntity.setBytesImagen(clienteDireccion.getMultipartFile().getBytes());
+//			} catch (IOException e) {
+//				throw new BusinessException(HttpStatus.BAD_REQUEST, "Error al procesar la imagen en el sistema.");
+//			}
+//		}
 
 		clienteEntity.setApellidoMaterno(clienteDireccion.getApellidoMaterno());
 		clienteEntity.setApellidoPaterno(clienteDireccion.getApellidoPaterno());
 		clienteEntity.setCorreoElectronico(clienteDireccion.getCorreoElectronico());
 		clienteEntity.setEstatus(ESTATUS_INACTIVO);
 		clienteEntity.setNombre(clienteDireccion.getNombre());
-		clienteEntity.setPassword(passwordEncoder.encode(clienteDireccion.getPassword()));
+		clienteEntity.setPassword(clienteDireccion.getPassword());
 		clienteEntity.setTelefono(clienteDireccion.getTelefono());
 		clienteEntity.setCodigoVerificacion(randomCode);
 	
@@ -147,7 +148,7 @@ public class RegistroService implements IRegistroService {
 		response.setOk(true);
 		response.setMensaje("Se ha guardado al cliente " + clienteEntity.getNombre() + " exitosamente.");
 		response.setResponse(clienteEntity);
-		clienteDireccion.setMultipartFile(null);
+		//clienteDireccion.setMultipartFile(null);
 		return response;
 
 	}
@@ -193,11 +194,11 @@ public class RegistroService implements IRegistroService {
 
 		String encodedPassword = clienteDb.getPassword();
 
-		if (passwordEncoder.matches(cliente.getPassword(), encodedPassword)) {
-			clienteDb.setPassword(passwordEncoder.encode(codigo));
-		} else {
-			throw new BusinessException(HttpStatus.BAD_REQUEST, "Contraseña incorrecta");
-		}
+//		if (passwordEncoder.matches(cliente.getPassword(), encodedPassword)) {
+//			clienteDb.setPassword(passwordEncoder.encode(codigo));
+//		} else {
+//			throw new BusinessException(HttpStatus.BAD_REQUEST, "Contraseña incorrecta");
+//		}
 
 		try {
 			clienteRepository.save(clienteDb);

@@ -72,13 +72,5 @@ public class UsuarioEntity implements Serializable{
 	private Integer estatus;
 	
 	
-	//@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	@Transient
-	private transient MultipartFile multipartFile;
-	
-	@Transient
-	private transient Integer idRolF;
-	
-	
 
 }

@@ -15,8 +15,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,8 +37,8 @@ public class UsuarioService implements IUsuarioService {
 	private IUsuarioRepository usuarioRepository;
 
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+//	@Autowired
+//	private PasswordEncoder passwordEncoder;
 
 	@Transactional
 	@Override
@@ -78,20 +78,20 @@ public class UsuarioService implements IUsuarioService {
 					"El  correo electrónico " + usuario.getCorreoElectronico() + " ya existe en la BD");
 		}
 		usuario.setCorreoElectronico(usuario.getCorreoElectronico().toLowerCase());
-		if (!usuario.getMultipartFile().isEmpty() || usuario.getMultipartFile() != null) {
-			usuario.setNombreImagen(usuario.getMultipartFile().getOriginalFilename());
-			usuario.setTipoImagen(usuario.getMultipartFile().getContentType());
-			try {
-				usuario.setBytesImagen(usuario.getMultipartFile().getBytes());
-			} catch (IOException e) {
-				throw new BusinessException(HttpStatus.BAD_REQUEST, "Error al procesar la imagen en el sistema.");
-			}
-		}
+//		if (!usuario.getMultipartFile().isEmpty() || usuario.getMultipartFile() != null) {
+//			usuario.setNombreImagen(usuario.getMultipartFile().getOriginalFilename());
+//			usuario.setTipoImagen(usuario.getMultipartFile().getContentType());
+//			try {
+//				usuario.setBytesImagen(usuario.getMultipartFile().getBytes());
+//			} catch (IOException e) {
+//				throw new BusinessException(HttpStatus.BAD_REQUEST, "Error al procesar la imagen en el sistema.");
+//			}
+//		}
 		usuario.setEstatus(ESTATUS_ACTIVO);
 
 
 		//usuario.setRol(rolOp.get());
-		usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+		//usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 		try {
 			usuario = usuarioRepository.save(usuario);
 		} catch (DataAccessException ex) {
@@ -102,7 +102,7 @@ public class UsuarioService implements IUsuarioService {
 		SingleResponse<UsuarioEntity> response = new SingleResponse<>();
 		response.setOk(true);
 		response.setMensaje("Se ha guardado al usuario " + usuario.getNombre() + " exitosamente.");
-		usuario.setMultipartFile(null);
+//		usuario.setMultipartFile(null);
 		response.setResponse(usuario);
 		return response;
 	}
@@ -153,19 +153,19 @@ public class UsuarioService implements IUsuarioService {
 			usuarioDb.setEstatus(usuario.getEstatus());
 		}
 	
-		if (usuario.getPassword() != null) {
-			usuarioDb.setPassword(passwordEncoder.encode(usuario.getPassword()));
-		}
+//		if (usuario.getPassword() != null) {
+//			usuarioDb.setPassword(passwordEncoder.encode(usuario.getPassword()));
+//		}
 
-		if (!usuario.getMultipartFile().isEmpty() || usuario.getMultipartFile() != null) {
-			usuarioDb.setNombreImagen(usuario.getMultipartFile().getOriginalFilename());
-			usuarioDb.setTipoImagen(usuario.getMultipartFile().getContentType());
-			try {
-				usuarioDb.setBytesImagen(usuario.getMultipartFile().getBytes());
-			} catch (IOException e) {
-				throw new BusinessException(HttpStatus.BAD_REQUEST, "Error al procesar la imagen en el sistema.");
-			}
-		}
+//		if (!usuario.getMultipartFile().isEmpty() || usuario.getMultipartFile() != null) {
+//			usuarioDb.setNombreImagen(usuario.getMultipartFile().getOriginalFilename());
+//			usuarioDb.setTipoImagen(usuario.getMultipartFile().getContentType());
+//			try {
+//				usuarioDb.setBytesImagen(usuario.getMultipartFile().getBytes());
+//			} catch (IOException e) {
+//				throw new BusinessException(HttpStatus.BAD_REQUEST, "Error al procesar la imagen en el sistema.");
+//			}
+//		}
 		try {
 			usuarioDb = usuarioRepository.save(usuarioDb);
 		} catch (DataAccessException ex) {
@@ -176,7 +176,7 @@ public class UsuarioService implements IUsuarioService {
 		SingleResponse<UsuarioEntity> response = new SingleResponse<>();
 		response.setOk(true);
 		response.setMensaje("Se ha actualizado al usuario " + usuarioDb.getNombre() + " exitosamente.");
-		usuarioDb.setMultipartFile(null);
+//		usuarioDb.setMultipartFile(null);
 		response.setResponse(usuarioDb);
 		return response;
 	}
@@ -314,14 +314,14 @@ public class UsuarioService implements IUsuarioService {
 		}
 		UsuarioEntity usuarioDb = oUsuarioDb.get();
 		String encodedPassword = usuarioDb.getPassword();
-		if (passwordEncoder.matches(usuario.getPassword(), encodedPassword)) {
+//		if (passwordEncoder.matches(usuario.getPassword(), encodedPassword)) {
 			SingleResponse<UsuarioEntity> response = new SingleResponse<>();
 			response.setOk(true);
 			response.setMensaje("Login exitoso.");
 			response.setResponse(usuarioDb);
 			return response;
-		}
-		throw new BusinessException(HttpStatus.BAD_REQUEST, "Contraseña incorrecta");
+//		}
+//		throw new BusinessException(HttpStatus.BAD_REQUEST, "Contraseña incorrecta");
 	}
 	
 
