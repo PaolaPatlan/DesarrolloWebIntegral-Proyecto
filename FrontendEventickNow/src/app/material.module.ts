@@ -8,6 +8,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSelectModule } from '@angular/material/select';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatToolbarModule } from '@angular/material/toolbar';
+
+  
+
 
 
 const modulos: any = [
@@ -16,7 +21,9 @@ const modulos: any = [
   MatInputModule,
   MatIconModule,
   MatGridListModule,
-  MatSelectModule
+  MatSelectModule,
+  MatMenuModule,
+  MatToolbarModule
 ]
 
 @NgModule({
