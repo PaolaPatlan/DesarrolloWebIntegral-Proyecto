@@ -7,7 +7,7 @@
         <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>Nombre</mat-label>
-            <input type="text" formControlName="name" matInput />
+            <input type="text" formControlName="name" matInput minlength="3" maxlength="20"/>
             <mat-error
               *ngIf="baseForm.isValidField(registerForm.get('name'))"
             >
@@ -17,7 +17,7 @@
 
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>Apellido</mat-label>
-            <input type="text" formControlName="lastname" matInput />
+            <input type="text" formControlName="lastname" matInput minlength="3" maxlength="20"/>
             <mat-error
               *ngIf="baseForm.isValidField(registerForm.get('lastname'))"
             >
@@ -52,16 +52,12 @@
             </mat-error>
           </mat-form-field>
 
-          
-
-
           <mat-form-field class="full-width" appearance="outline" >
             <mat-label>Contraseña</mat-label>
             <input
               [type]="'password'"
               formControlName="password"
-              matInput
-              
+              matInput  
             />
             <mat-error
               *ngIf="baseForm.isValidField(registerForm.get('password'))"
