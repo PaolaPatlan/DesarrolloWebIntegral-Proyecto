@@ -9,6 +9,7 @@ import { MaterialModule } from './material.module';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { InicioComponent } from './pages/inicio/inicio.component';
 import { HeaderComponent } from './shared/components/header/header.component';
+import { AdministradorComponent } from './pages/administrador/administrador.component';
 
 
 
@@ -17,7 +18,8 @@ import { HeaderComponent } from './shared/components/header/header.component';
     AppComponent,
     RegistroUsuarioComponent,
     InicioComponent,
-    HeaderComponent
+    HeaderComponent,
+    AdministradorComponent
   ],
   imports: [
     BrowserModule,
