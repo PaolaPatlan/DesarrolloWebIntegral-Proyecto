@@ -58,6 +58,7 @@ public class UsuarioEntity implements Serializable{
 	@Column(name = "PASSWORD", length = 64)
 	private String password;
 	
+<<<<<<< HEAD
 	@Column(name = "NOMBRE_IMAGEN", length = 100)
 	private String nombreImagen;
 	
@@ -67,6 +68,10 @@ public class UsuarioEntity implements Serializable{
 	@Column(name = "BYTES_IMAGEN", length = 100)
 	@Lob
 	private byte[] bytesImagen;
+=======
+	@Column(name = "ROL", length= 30)
+	private Integer rol;
+>>>>>>> feature/login
 	
 	@Column(name = "ESTATUS", length = 1)
 	private Integer estatus;
