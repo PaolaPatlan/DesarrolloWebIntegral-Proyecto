@@ -1,6 +1,8 @@
 package com.eventickNow.model.entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,7 +10,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -58,23 +63,13 @@ public class UsuarioEntity implements Serializable{
 	@Column(name = "PASSWORD", length = 64)
 	private String password;
 	
-<<<<<<< HEAD
-	@Column(name = "NOMBRE_IMAGEN", length = 100)
-	private String nombreImagen;
-	
-	@Column(name = "TIPO_IMAGEN", length = 100)
-	private String tipoImagen;
-	
-	@Column(name = "BYTES_IMAGEN", length = 100)
-	@Lob
-	private byte[] bytesImagen;
-=======
-	@Column(name = "ROL", length= 30)
-	private Integer rol;
->>>>>>> feature/login
-	
 	@Column(name = "ESTATUS", length = 1)
 	private Integer estatus;
+	
+	@ManyToMany
+	@JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "id_usuario"),
+	inverseJoinColumns = @JoinColumn(name = "id_rol"))
+	private Set<Rol> roles = new HashSet<>();
 	
 	
 

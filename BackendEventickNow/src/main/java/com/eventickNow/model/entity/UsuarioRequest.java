@@ -2,8 +2,10 @@ package com.eventickNow.model.entity;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Getter;
@@ -12,6 +14,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UsuarioRequest implements UserDetails{
+	
+	private String nombre;
 	private String correoElectronico;
 	private String password;
 	private Collection<? extends GrantedAuthority> authorities;
@@ -46,6 +50,13 @@ public class UsuarioRequest implements UserDetails{
 	}
 	
 	public static UsuarioRequest build(UsuarioEntity usuario) {
-		List<GrantedAuthority> authorities = usuario.getRol()
+		//Obtener los roles
+		List<GrantedAuthority> authorities = 
+				usuario.getRoles().stream().map(rol  -> new SimpleGrantedAuthority(
+						rol.getRolNombre().name())).collect(Collectors.toList());
+		
+		return new UsuarioRequest();
+		//return new UsuarioRequest(usuario.getNombre(), usuario.getCorreoElectronico(), usuario.getPassword(), authorities);
+						
 	}
 }

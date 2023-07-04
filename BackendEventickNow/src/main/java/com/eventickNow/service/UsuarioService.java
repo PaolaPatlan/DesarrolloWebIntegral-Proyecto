@@ -28,6 +28,7 @@ import com.eventickNow.model.entity.UsuarioEntity;
 import com.eventickNow.repository.IUsuarioRepository;
 
 @Service
+@Transactional
 public class UsuarioService implements IUsuarioService {
 
 	public static final Integer ESTATUS_ACTIVO = 1;
@@ -326,5 +327,16 @@ public class UsuarioService implements IUsuarioService {
 	
 
 	
+	public Optional<UsuarioEntity> getByCorreoE(String correoElectronico){
+		return usuarioRepository.findByCorreoE(correoElectronico);
+	}
+	
+	public boolean existsByCorreoE(String correoElectronico) {
+		return usuarioRepository.existsByCorreoE(correoElectronico);
+	}
+	
+	public void save(UsuarioEntity usuario) {
+		usuarioRepository.save(usuario);
+	}
 
 }

@@ -22,4 +22,10 @@ public interface IUsuarioRepository extends JpaRepository<UsuarioEntity, Integer
 	Optional<UsuarioEntity> findByCorreoElectronicoIgnoreCaseAndEstatus(String correo, Integer estatus);
 	//@Query("SELECT d FROM UsuarioEntity d WHERE CODIGO_VERIFICACION =:id ")
 	Optional<UsuarioEntity> findBycodigoVerificacion(@Param("id") String codigo);
+	
+	Optional<UsuarioEntity> findByCorreoE(String correoElectronico);
+	boolean existsByCorreoE(String correoElectronico);
+	
+	
+	
 }
