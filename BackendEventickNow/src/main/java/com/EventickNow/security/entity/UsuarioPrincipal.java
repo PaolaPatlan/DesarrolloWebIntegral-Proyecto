@@ -8,6 +8,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import lombok.Getter;
+import lombok.Setter;
+
+
+@Getter
+@Setter
 public class UsuarioPrincipal implements UserDetails{
 
 	/**
@@ -17,17 +23,19 @@ public class UsuarioPrincipal implements UserDetails{
 	
 	private String nombre;
 	
-	private String apellidos;
-	
+	private String apellidoMaterno;
+
+	private String apellidoPaterno;
+
 	private String correoElectronico;
 	
 	private String password;
 	
 	private Collection<? extends GrantedAuthority> authorities;
 	
-	public UsuarioPrincipal(String nombre, String apellidos, String correoElectronico, String password, Collection<? extends GrantedAuthority> authorities) {
+	public UsuarioPrincipal(String nombre, String apellidoP, String apellidoM, String correoElectronico, String password, Collection<? extends GrantedAuthority> authorities) {
         this.nombre = nombre;
-        this.apellidos = apellidos;
+       // this.apellidos = apellidos;
         this.correoElectronico = correoElectronico;
         this.password = password;
         this.authorities = authorities;
@@ -41,13 +49,13 @@ public class UsuarioPrincipal implements UserDetails{
 		this.nombre = nombre;
 	}
 
-	public String getApellidos() {
-		return apellidos;
-	}
-
-	public void setApellidos(String apellidos) {
-		this.apellidos = apellidos;
-	}
+//	public String getApellidos() {
+//		return apellidos;
+//	}
+//
+//	public void setApellidos(String apellidos) {
+//		this.apellidos = apellidos;
+//	}
 	
 	public String getCorreoElectronico() {
 		return correoElectronico;
@@ -89,7 +97,7 @@ public class UsuarioPrincipal implements UserDetails{
 				usuario.getRoles().stream().map(rol  -> new SimpleGrantedAuthority(
 						rol.getRolNombre().name())).collect(Collectors.toList());
 		
-		return new UsuarioPrincipal(usuario.getNombre(), usuario.getApellidos(), usuario.getCorreoElectronico(), usuario.getPassword(), authorities);
+		return new UsuarioPrincipal(usuario.getNombre(), usuario.getApellidoMaterno(), usuario.getApellidoPaterno(), usuario.getCorreoElectronico(), usuario.getPassword(), authorities);
 						
 	}
 
