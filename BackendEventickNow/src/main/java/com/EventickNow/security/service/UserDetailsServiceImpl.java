@@ -19,7 +19,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UsuarioEntity usuario = usuarioService.getByCorreoE(username).get();
+		UsuarioEntity usuario = usuarioService.getByCorreoEs(username).get();
 		return UsuarioPrincipal.build(usuario);
 	}
 

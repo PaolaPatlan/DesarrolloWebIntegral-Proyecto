@@ -1,15 +1,21 @@
 package com.EventickNow.security.controller;
 
+import java.awt.PageAttributes.MediaType;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,6 +24,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,37 +63,67 @@ public class authController {
 	@Autowired
 	JwtProvider jwtProvider;
 	
+	@Autowired
+	private JavaMailSender javaMailSender;
+	
 	@PostMapping("/nuevo")
-		public ResponseEntity<?> nuevo(@Valid @RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult){
-			if(bindingResult.hasErrors())
-				return new ResponseEntity(new Mensaje("Campos incorrectos"), HttpStatus.BAD_REQUEST);
-			if(usuarioService.existsByCorreoE(nuevoUsuario.getCorreoElectronico()))
-				return new ResponseEntity(new Mensaje("Ese email ya existe"), HttpStatus.BAD_REQUEST);
-			UsuarioEntity usuario = new UsuarioEntity(nuevoUsuario.getNombre(),nuevoUsuario.getApellidos(), nuevoUsuario.getCorreoElectronico(), 
-					passwordEncoder.encode(nuevoUsuario.getPassword()));
-			Set<Rol> roles = new HashSet<>();
-			Optional<Rol> usuarioRol = rolService.getByRolNombre(RolNombre.ROLE_USUARIO);
-			if (usuarioRol.isPresent()) {
-			    roles.add(usuarioRol.get());
-			}
-
-			Optional<Rol> creadorRol = rolService.getByRolNombre(RolNombre.ROLE_CREADOR);
-			if (nuevoUsuario.getRoles().contains("creador") && creadorRol.isPresent()) {
-			    roles.add(creadorRol.get());
-			}
-
-			/*roles.add(rolService.getByRolNombre(RolNombre.ROLE_USUARIO).get());
-	        if(nuevoUsuario.getRoles().contains("creador"))
-	            roles.add(rolService.getByRolNombre(RolNombre.ROLE_CREADOR).get());
-	        if(nuevoUsuario.getRoles().contains("admin"))
-	            roles.add(rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get());*/
-	        usuario.setRoles(roles);
-			usuarioService.save(usuario);
-			return new ResponseEntity(new Mensaje("Usuario guardado"), HttpStatus.CREATED);
+	public ResponseEntity<?> nuevo(@Valid @RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult) throws MessagingException{
+		if(bindingResult.hasErrors())
+			return new ResponseEntity(new Mensaje("Campos incorrectos"), HttpStatus.BAD_REQUEST);
+		if(usuarioService.existsByCorreoE(nuevoUsuario.getCorreoElectronico()))
+			return new ResponseEntity(new Mensaje("Ese email ya existe"), HttpStatus.BAD_REQUEST);
+		UsuarioEntity usuario = new UsuarioEntity(nuevoUsuario.getNombre(), nuevoUsuario.getApellidoMaterno() 
+				, nuevoUsuario.getApellidoPaterno(), nuevoUsuario.getCorreoElectronico(), 
+				passwordEncoder.encode(nuevoUsuario.getPassword()));
+		usuario.setEstatus(0);
+		Set<Rol> roles = new HashSet<>();
+		Optional<Rol> usuarioRol = rolService.getByRolNombre(RolNombre.ROLE_USUARIO);
+		if (usuarioRol.isPresent()) {
+		    roles.add(usuarioRol.get());
 		}
+
+		Optional<Rol> creadorRol = rolService.getByRolNombre(RolNombre.ROLE_CREADOR);
+		if (nuevoUsuario.getRoles().contains("creador") && creadorRol.isPresent()) {
+		    roles.add(creadorRol.get());
+		}
+		
+		MimeMessage message = javaMailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+		helper.setTo(usuario.getCorreoElectronico());
+		helper.setSubject("Confirmación de registro");
+		String htmlContent = "<html><body>" + "<p>Hola "+usuario.getNombre() + ",</p>"
+				+ "<p>Gracias por registrarte en nuestra aplicación. Para confirmar tu registro, haz clic en el botón a continuación:</p>"
+				+ "<a href='http://localhost:8080/auth/confirmar/" + usuario.getCorreoElectronico()
+				+ "'><button style='background-color: #008CBA; color: white; padding: 10px;'>Confirmar registro</button></a>"
+				+ "<p>Saludos,<br>El equipo de nuestra aplicación</p>" + "</body></html>";
+		helper.setText(htmlContent, true);
+		javaMailSender.send(message);
+
+		/*roles.add(rolService.getByRolNombre(RolNombre.ROLE_USUARIO).get());
+        if(nuevoUsuario.getRoles().contains("creador"))
+            roles.add(rolService.getByRolNombre(RolNombre.ROLE_CREADOR).get());
+        if(nuevoUsuario.getRoles().contains("admin"))
+            roles.add(rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get());*/
+        usuario.setRoles(roles);
+		usuarioService.save(usuario);
+		return new ResponseEntity(new Mensaje("Usuario guardado"), HttpStatus.CREATED);
+	}
+	
 	
 	@PostMapping("/login")
 	public ResponseEntity<JwtDto> login(@Valid @RequestBody LoginUsuario loginUsario, BindingResult bindingResult){
+		
+		if(usuarioService.existsByCorreoE(loginUsario.getCorreoElectronico())){
+			
+			Optional<UsuarioEntity>  usuario = Optional.empty();
+			usuario = usuarioService.getByCorreoEs(loginUsario.getCorreoElectronico());
+			
+			if (usuario.get().getEstatus() == 0) {
+				return new ResponseEntity(new Mensaje("Debes validar tu registro"), HttpStatus.BAD_REQUEST);
+			}
+			
+		}
+		
 		if(bindingResult.hasErrors())
 			return new ResponseEntity(new Mensaje("Email o contraseña incorrectos"), HttpStatus.BAD_REQUEST);
 		Authentication authentication = 
@@ -97,5 +135,12 @@ public class authController {
 		//JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(), userDetails.getAuthorities()); 
 		return new ResponseEntity(jwtDto, HttpStatus.OK);
 	}
+	
+	
+	@GetMapping(path = "/confirmar/{correo}")
+    public ResponseEntity<Void> confirmRegistration(@PathVariable("correo") String correo) {
+		usuarioService.getByCorreoE(correo);
+        return ResponseEntity.ok().build();
+    }
 	
 }

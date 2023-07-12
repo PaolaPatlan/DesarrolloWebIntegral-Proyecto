@@ -6,12 +6,19 @@ import java.util.HashSet;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class NuevoUsuario {
 
 	@NotBlank
     private String nombre;
     @NotBlank
-    private String apellidos;
+    private String apellidoMaterno;
+    @NotBlank
+    private String apellidoPaterno;
     @Email
     private String correoElectronico;
     @NotBlank
@@ -26,13 +33,13 @@ public class NuevoUsuario {
         this.nombre = nombre;
     }
 
-    public String getApellidos() {
-        return apellidos;
-    }
-
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
-    }
+//    public String getApellidos() {
+//        return apellidos;
+//    }
+//
+//    public void setApellidos(String apellidos) {
+//        this.apellidos = apellidos;
+//    }
 
     public String getCorreoElectronico() {
         return correoElectronico;

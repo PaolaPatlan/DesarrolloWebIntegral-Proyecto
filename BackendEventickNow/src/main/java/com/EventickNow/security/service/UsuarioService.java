@@ -18,8 +18,14 @@ public class UsuarioService {
 	@Autowired
 	private IUsuarioRepository usuarioRepository;
 
-
 	public Optional<UsuarioEntity> getByCorreoE(String correoElectronico){
+		Optional<UsuarioEntity> usuario = Optional.empty();
+		usuario = usuarioRepository.findByCorreoElectronico(correoElectronico);
+		usuario.get().setEstatus(1);
+		return usuario;
+	}
+
+	public Optional<UsuarioEntity> getByCorreoEs(String correoElectronico){
 		return usuarioRepository.findByCorreoElectronico(correoElectronico);
 	}
 	
