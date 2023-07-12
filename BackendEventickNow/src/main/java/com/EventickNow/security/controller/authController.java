@@ -92,10 +92,10 @@ public class authController {
 		helper.setTo(usuario.getCorreoElectronico());
 		helper.setSubject("Confirmación de registro");
 		String htmlContent = "<html><body>" + "<p>Hola "+usuario.getNombre() + ",</p>"
-				+ "<p>Gracias por registrarte en nuestra aplicación. Para confirmar tu registro, haz clic en el botón a continuación:</p>"
+				+ "<p>Gracias por registrarte en EventickNow. Para confirmar tu registro, haz clic en siguiente botón:</p>"
 				+ "<a href='http://localhost:8080/auth/confirmar/" + usuario.getCorreoElectronico()
-				+ "'><button style='background-color: #008CBA; color: white; padding: 10px;'>Confirmar registro</button></a>"
-				+ "<p>Saludos,<br>El equipo de nuestra aplicación</p>" + "</body></html>";
+				+ "'><button style='background-color: white; color:#8437D3; padding: 10px; border-radius: 25px; border-color: #8437D3; border-width: 1px;'>Confirmar registro</button></a>"
+				+ "<p>Saludos,<br>El equipo de EventickNow</p>" + "</body></html>";
 		helper.setText(htmlContent, true);
 		javaMailSender.send(message);
 
