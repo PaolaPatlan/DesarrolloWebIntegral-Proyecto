@@ -55,21 +55,23 @@ public class UsuarioEntity implements Serializable{
 	//@Column(name = "CODIGO_VERIFICACION", nullable = true, length = 64)
 	//private String codigoVerificacion;
 	
-	@ManyToMany
-	@JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "id_usuario"),
-	inverseJoinColumns = @JoinColumn(name = "id_rol"))
-	private Set<Rol> roles = new HashSet<>();
-	
+//	@ManyToMany
+//	@JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "id_usuario"),
+//	inverseJoinColumns = @JoinColumn(name = "id_rol"))
+	@Column(name = "ROL", length = 1)
+	private Integer roles;
 	
 	 public UsuarioEntity() {
 	    }
 
-	    public UsuarioEntity(@NotNull String nombre, @NotNull String apellidoM, @NotNull String apellidoP,@NotNull String correoElectronico, @NotNull String password) {
+	    public UsuarioEntity(@NotNull String nombre, @NotNull String apellidoM, @NotNull String apellidoP,@NotNull String correoElectronico, @NotNull String password,
+	    		@NotNull Integer rol) {
 	        this.nombre = nombre;
 	        this.apellidoMaterno = apellidoM;
 	        this.apellidoPaterno = apellidoP;
 	        this.correoElectronico = correoElectronico;
 	        this.password = password;
+	        this.roles = rol;
 	    }
 
 	    public int getId() {
@@ -114,11 +116,11 @@ public class UsuarioEntity implements Serializable{
 	        this.password = password;
 	    }
 
-	    public Set<Rol> getRoles() {
+	    public Integer getRoles() {
 	        return roles;
 	    }
 
-	    public void setRoles(Set<Rol> roles) {
+	    public void setRoles(Integer roles) {
 	        this.roles = roles;
 	    }
 }

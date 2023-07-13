@@ -31,14 +31,16 @@ public class UsuarioPrincipal implements UserDetails{
 	
 	private String password;
 	
+	private Integer rol;
+	
 	private Collection<? extends GrantedAuthority> authorities;
 	
-	public UsuarioPrincipal(String nombre, String apellidoP, String apellidoM, String correoElectronico, String password, Collection<? extends GrantedAuthority> authorities) {
+	public UsuarioPrincipal(String nombre, String apellidoP, String apellidoM, String correoElectronico, String password, Integer rol) {
         this.nombre = nombre;
        // this.apellidos = apellidos;
         this.correoElectronico = correoElectronico;
         this.password = password;
-        this.authorities = authorities;
+        this.rol = rol;
     }
 	
 	public String getNombre() {
@@ -61,10 +63,7 @@ public class UsuarioPrincipal implements UserDetails{
 		return correoElectronico;
 	}
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return authorities;
-	}
+	
 	
 	@Override
 	public String getPassword() {
@@ -93,11 +92,11 @@ public class UsuarioPrincipal implements UserDetails{
 	
 	public static UsuarioPrincipal build(UsuarioEntity usuario) {
 		//Obtener los roles
-		List<GrantedAuthority> authorities = 
-				usuario.getRoles().stream().map(rol  -> new SimpleGrantedAuthority(
-						rol.getRolNombre().name())).collect(Collectors.toList());
+//		List<GrantedAuthority> authorities = 
+//				usuario.getRoles().stream().map(rol  -> new SimpleGrantedAuthority(
+//						rol.getRolNombre().name())).collect(Collectors.toList());
 		
-		return new UsuarioPrincipal(usuario.getNombre(), usuario.getApellidoMaterno(), usuario.getApellidoPaterno(), usuario.getCorreoElectronico(), usuario.getPassword(), authorities);
+		return new UsuarioPrincipal(usuario.getNombre(), usuario.getApellidoMaterno(), usuario.getApellidoPaterno(), usuario.getCorreoElectronico(), usuario.getPassword(), usuario.getRoles());
 						
 	}
 
