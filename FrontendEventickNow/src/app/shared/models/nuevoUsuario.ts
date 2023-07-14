@@ -6,5 +6,6 @@ export interface registerUser {
     correoElectronico: string;
     password: string;
     roles: number;
+    
 
 }
