@@ -74,18 +74,18 @@ public class authController {
 			return new ResponseEntity(new Mensaje("Ese email ya existe"), HttpStatus.BAD_REQUEST);
 		UsuarioEntity usuario = new UsuarioEntity(nuevoUsuario.getNombre(), nuevoUsuario.getApellidoMaterno() 
 				, nuevoUsuario.getApellidoPaterno(), nuevoUsuario.getCorreoElectronico(), 
-				passwordEncoder.encode(nuevoUsuario.getPassword()));
+				passwordEncoder.encode(nuevoUsuario.getPassword()),nuevoUsuario.getRoles());
 		usuario.setEstatus(0);
-		Set<Rol> roles = new HashSet<>();
-		Optional<Rol> usuarioRol = rolService.getByRolNombre(RolNombre.ROLE_USUARIO);
-		if (usuarioRol.isPresent()) {
-		    roles.add(usuarioRol.get());
-		}
-
-		Optional<Rol> creadorRol = rolService.getByRolNombre(RolNombre.ROLE_CREADOR);
-		if (nuevoUsuario.getRoles().contains("creador") && creadorRol.isPresent()) {
-		    roles.add(creadorRol.get());
-		}
+		
+//		Optional<Rol> usuarioRol = rolService.getByRolNombre(RolNombre.ROLE_USUARIO);
+//		if (usuarioRol.isPresent()) {
+//		    roles.add(usuarioRol.get());
+//		}
+//
+//		Optional<Rol> creadorRol = rolService.getByRolNombre(RolNombre.ROLE_CREADOR);
+//		if (nuevoUsuario.getRoles().contains("creador") && creadorRol.isPresent()) {
+//		    roles.add(creadorRol.get());
+//		}
 		
 		MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -104,7 +104,7 @@ public class authController {
             roles.add(rolService.getByRolNombre(RolNombre.ROLE_CREADOR).get());
         if(nuevoUsuario.getRoles().contains("admin"))
             roles.add(rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get());*/
-        usuario.setRoles(roles);
+        usuario.setRoles(nuevoUsuario.getRoles());
 		usuarioService.save(usuario);
 		return new ResponseEntity(new Mensaje("Usuario guardado"), HttpStatus.CREATED);
 	}

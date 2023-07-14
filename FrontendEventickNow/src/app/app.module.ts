@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RegistroUsuarioComponent } from './pages/registro-usuario/registro-usuario.component';
@@ -25,7 +25,8 @@ import { HeaderComponent } from './shared/components/header/header.component';
     BrowserAnimationsModule,
     MaterialModule, // Modulo donde se encuentran los componentes de angular material
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

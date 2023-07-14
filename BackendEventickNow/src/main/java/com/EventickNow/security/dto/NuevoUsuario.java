@@ -23,7 +23,7 @@ public class NuevoUsuario {
     private String correoElectronico;
     @NotBlank
     private String password;
-    private Set<String> roles = new HashSet<>();
+    private Integer roles;
 
     public String getNombre() {
         return nombre;
@@ -57,11 +57,11 @@ public class NuevoUsuario {
         this.password = password;
     }
 
-    public Set<String> getRoles() {
+    public Integer getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<String> roles) {
+    public void setRoles(Integer roles) {
         this.roles = roles;
     }
 }

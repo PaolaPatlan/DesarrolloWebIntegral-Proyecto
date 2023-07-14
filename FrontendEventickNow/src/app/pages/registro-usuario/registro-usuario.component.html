@@ -16,8 +16,18 @@
           </mat-form-field>
 
           <mat-form-field class="full-width" appearance="outline">
-            <mat-label>Apellido</mat-label>
-            <input type="text" formControlName="lastname" matInput minlength="3" maxlength="20"/>
+            <mat-label>Apellido Paterno</mat-label>
+            <input type="text" formControlName="lastnamep" matInput minlength="3" maxlength="20"/>
+            <mat-error
+              *ngIf="baseForm.isValidField(registerForm.get('lastname'))"
+            >
+              {{ baseForm.getErrorMessage(registerForm.get("lastname")) }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Apellido Materno</mat-label>
+            <input type="text" formControlName="lastnamem" matInput minlength="3" maxlength="20"/>
             <mat-error
               *ngIf="baseForm.isValidField(registerForm.get('lastname'))"
             >
@@ -58,6 +68,8 @@
               [type]="'password'"
               formControlName="password"
               matInput  
+              minlength="8" 
+              maxlength="20"
             />
             <mat-error
               *ngIf="baseForm.isValidField(registerForm.get('password'))"
