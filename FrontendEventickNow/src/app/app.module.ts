@@ -9,6 +9,10 @@ import { MaterialModule } from './material.module';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { InicioComponent } from './pages/inicio/inicio.component';
 import { HeaderComponent } from './shared/components/header/header.component';
+import { LoginComponent } from './pages/login/login.component';
+import { AdministradorComponent } from './pages/administrador/administrador.component';
+import { CreadorEventosComponent } from './pages/creador-eventos/creador-eventos.component';
+import { UsuarioComponent } from './pages/usuario/usuario.component';
 
 
 
@@ -17,7 +21,11 @@ import { HeaderComponent } from './shared/components/header/header.component';
     AppComponent,
     RegistroUsuarioComponent,
     InicioComponent,
-    HeaderComponent
+    HeaderComponent,
+    LoginComponent,
+    AdministradorComponent,
+    CreadorEventosComponent,
+    UsuarioComponent
   ],
   imports: [
     BrowserModule,
