@@ -1,6 +1,6 @@
 package com.EventickNow.security.controller;
 
-import java.awt.PageAttributes.MediaType;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -13,6 +13,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -25,20 +26,27 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.EventickNow.model.dto.Mensaje;
+import com.EventickNow.security.dto.EventoRequest;
 import com.EventickNow.security.dto.JwtDto;
 import com.EventickNow.security.dto.LoginUsuario;
 import com.EventickNow.security.dto.NuevoUsuario;
+import com.EventickNow.security.entity.EventoEntity;
+import com.EventickNow.security.entity.Response;
 import com.EventickNow.security.entity.Rol;
 import com.EventickNow.security.entity.UsuarioEntity;
 import com.EventickNow.security.enums.RolNombre;
 import com.EventickNow.security.jwt.JwtProvider;
+import com.EventickNow.security.service.EventoService;
 import com.EventickNow.security.service.RolService;
 import com.EventickNow.security.service.UsuarioService;
 
@@ -65,6 +73,28 @@ public class authController {
 	
 	@Autowired
 	private JavaMailSender javaMailSender;
+	
+	
+	@Autowired
+	private EventoService eventoService;
+	
+	@GetMapping(path = "/consultarTodos", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Response<EventoEntity>> consultartodos(){
+		
+		Response<EventoEntity> lista = eventoService.consultarTodos();
+		
+		return new ResponseEntity<Response<EventoEntity>> (lista, HttpStatus.OK);
+		
+	}
+	
+	@PostMapping(path = "/guardarEvento",
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Response<EventoEntity>> guardarEvento (@RequestParam("imagenFile") MultipartFile imagenFile, @ModelAttribute EventoRequest evento){
+		
+		Response<EventoEntity> response = eventoService.guardarEvento(imagenFile, evento);
+		return new ResponseEntity<Response<EventoEntity>> (response, HttpStatus.OK);
+	}
+	
 	
 	@PostMapping("/nuevo")
 	public ResponseEntity<?> nuevo(@Valid @RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult) throws MessagingException{
