@@ -13,13 +13,26 @@ import { environment } from 'src/environments/environment';
 })
 export class RegistroService {
 
-  //Conexión con el backend para insertar nuevo usuario
-  ///auth/nuevo;
-
   constructor(private http: HttpClient) { }
 
   
-  newUser(user: registerUser) {
-    return this.http.post(`${ environment.baseUrl }/auth/nuevo`, user)
+/*
+  función para nuevo usuario
+*/
+newUser(user: registerUser):Observable<any>{
+  return this.http.post(`${ environment.baseUrl }/auth/nuevo`, user).pipe(catchError( (error) => this.handlerError(error)));
+}
+
+/*
+  función para errores
+*/
+handlerError(error: any): Observable<never> {
+  let errorMessage = "Ocurrio un error";
+
+  if(error.status == 401) {
+    errorMessage = "No autorizado";
   }
+
+  return throwError(() => errorMessage);
+}
 }

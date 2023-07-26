@@ -6,6 +6,8 @@ import { BaseForm } from 'src/app/shared/utils/base-form';
 import { RegistroService } from 'src/app/services/registro.service';
 //Modelo para registrar usuario
 import { registerUser } from '../../shared/models/nuevoUsuario';
+//Modulo para alertas
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-registro-usuario',
@@ -68,24 +70,31 @@ export class RegistroUsuarioComponent implements OnInit {
 
   //Función para registrarse y enviar los datos
   onRegister() {
-
-    if(this.registerForm.invalid)return;
+    if (this.registerForm.invalid) return;
 
     const formValues = this.registerForm.value;
 
-      var data: registerUser = {
-        nombre: formValues.name ? formValues.name : '',
-        apellidoPaterno: formValues.lastnamep ? formValues.lastnamep : '',
-        apellidoMaterno: formValues.lastnamem ? formValues.lastnamem : '',
-        roles: formValues.typeUser ? formValues.typeUser : '',
-        correoElectronico: formValues.email ? formValues.email : '',
-        password: formValues.password ? formValues.password : '',
-      }
-
-      this.registroService.newUser(data).subscribe(() => {
-        console.log('Usuario creado');
-        
-      });
-    }
+    var data: registerUser = {
+      nombre: formValues.name ? formValues.name : '',
+      apellidoPaterno: formValues.lastnamep ? formValues.lastnamep : '',
+      apellidoMaterno: formValues.lastnamem ? formValues.lastnamem : '',
+      roles: formValues.typeUser ? formValues.typeUser : '',
+      correoElectronico: formValues.email ? formValues.email : '',
+      password: formValues.password ? formValues.password : '',
+    };
+     
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Se ha enviado un correo de confirmación',
+      showConfirmButton: false,
+      timer: 1500
+    })
+    this.router.navigate(['/']);
+    this.registroService.newUser(data).subscribe(() => {
+      console.log('Usuario creado con exito');
+      
+    });
+  }
   }
 

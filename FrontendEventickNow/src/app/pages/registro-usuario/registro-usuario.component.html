@@ -68,6 +68,8 @@
               [type]="'password'"
               formControlName="password"
               matInput  
+              minlength="8" 
+              maxlength="20"
             />
             <mat-error
               *ngIf="baseForm.isValidField(registerForm.get('password'))"

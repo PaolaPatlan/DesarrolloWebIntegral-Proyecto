@@ -1,11 +1,10 @@
 export interface registerUser {
 
-    //id?: number;
     nombre: string;
-    apellidoMaterno: string;
     apellidoPaterno: string;
+    apellidoMaterno: string;
     correoElectronico: string;
     password: string;
-    roles: string;
+    roles: number;
 
 }
