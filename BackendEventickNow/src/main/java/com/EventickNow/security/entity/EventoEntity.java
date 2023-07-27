@@ -56,6 +56,6 @@ public class EventoEntity implements Serializable{
     private MultipartFile imagenFile;
 	
 	@ManyToOne
-    @JoinColumn(name = "USUARIOS")
+    @JoinColumn(name = "ID_ORGANIZADOR")
     private UsuarioEntity idOrganizador;
 }

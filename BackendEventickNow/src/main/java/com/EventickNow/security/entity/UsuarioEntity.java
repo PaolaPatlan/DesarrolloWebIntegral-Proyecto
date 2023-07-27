@@ -37,11 +37,11 @@ public class UsuarioEntity implements Serializable{
 	@Column(name = "NOMBRE", nullable = false, length = 50)
 	private String nombre;
 	
-	@Column(name = "APELLIDOMATERNO", nullable = false, length = 30)
-	private String apellidoMaterno;
-	
-	@Column(name = "APELLIDOPATERNO", nullable = false, length = 30)
+	@Column(name = "APELLIDO_PATERNO", nullable = false, length = 30)
 	private String apellidoPaterno;
+	
+	@Column(name = "APELLIDO_MATERNO", nullable = false, length = 30)
+	private String apellidoMaterno;
 	
 	@Column(name = "CORREO_ELECTRONICO", unique = true, length = 50)
 	private String correoElectronico;
@@ -52,12 +52,6 @@ public class UsuarioEntity implements Serializable{
 	@Column(name = "ESTATUS", length = 1)
 	private Integer estatus;
 	
-	//@Column(name = "CODIGO_VERIFICACION", nullable = true, length = 64)
-	//private String codigoVerificacion;
-	
-//	@ManyToMany
-//	@JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "id_usuario"),
-//	inverseJoinColumns = @JoinColumn(name = "id_rol"))
 	@Column(name = "ROL", length = 1)
 	private Integer roles;
 	

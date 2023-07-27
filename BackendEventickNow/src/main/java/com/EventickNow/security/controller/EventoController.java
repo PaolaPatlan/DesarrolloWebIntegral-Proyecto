@@ -3,10 +3,11 @@ package com.EventickNow.security.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +28,7 @@ public class EventoController {
 	@Autowired
 	private EventoService eventoService;
 	
-	@GetMapping(path = "/consultarTodos", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/consultarTodosEventos", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Response<EventoEntity>> consultartodos(){
 		
 		Response<EventoEntity> lista = eventoService.consultarTodos();
@@ -43,5 +44,24 @@ public class EventoController {
 		Response<EventoEntity> response = eventoService.guardarEvento(imagenFile, evento);
 		return new ResponseEntity<Response<EventoEntity>> (response, HttpStatus.OK);
 	}
+	
+	@GetMapping(path = "/consultarEventos/{idOrganizador}",
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Response<EventoEntity>> consultarEventosPorIdOrganizador(@PathVariable("idOrganizador") Integer idOrganizador){
+		
+		Response<EventoEntity> response = eventoService.consultarEventosPorIdOrganizador(idOrganizador);
+		
+		return new ResponseEntity<Response<EventoEntity>> (response,HttpStatus.OK);
+	}
+	
+	@DeleteMapping(path = "/eliminarEvento/{idEvento}",
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Response<Integer>> eliminarEvento (@PathVariable("idEvento") Integer idEvento){
+		
+		Response<Integer> id = eventoService.eliminarEvento(idEvento);
+		
+		return new ResponseEntity<Response <Integer>>(id, HttpStatus.OK);
+	}
+	
 	
 }

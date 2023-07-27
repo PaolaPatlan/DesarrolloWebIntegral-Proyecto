@@ -15,6 +15,8 @@ import com.EventickNow.security.entity.UsuarioEntity;
 import com.EventickNow.security.repository.IEventoRepository;
 import com.EventickNow.security.repository.IUsuarioRepository;
 
+import antlr.debug.Event;
+
 @Service
 public class EventoService {
 
@@ -92,6 +94,43 @@ public class EventoService {
 		return response;
 		
 	}
+	
+	//----------- Consultar eventos por idOrganizador -------------------------------------
+	public Response<EventoEntity> consultarEventosPorIdOrganizador(Integer idOrganizador) {
+	    Response<EventoEntity> response = new Response<>();
+
+	    List<EventoEntity> lista = eventoRepository.consultarPorIdOrganizador(idOrganizador);
+
+	    if (lista == null || lista.isEmpty()) {
+	        response.setMessage("No hay resultados");
+	    } else {
+	        response.setMessage("Consulta correcta");
+	    }
+
+	    response.setStatus("OK");
+	    response.setList(lista);
+	    if (lista != null) {
+	        response.setCount(lista.size());
+	    } else {
+	        response.setCount(0);
+	    }
+
+	    return response;
+	}
+
+	
+	//-----------------Eliminar-------------------
+	public Response<Integer> eliminarEvento(Integer idEvento){
+		Response<Integer> response = new Response<Integer>();
+		eventoRepository.deleteById(idEvento);
+		
+		response.setMessage("Eliminado correctamente");
+		response.setStatus("OK");
+		response.setData(idEvento);
+		
+		return response;
+	}
+	
 	
 
 }
