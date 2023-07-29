@@ -1,12 +1,8 @@
 package com.EventickNow.security.controller;
 
-import java.awt.PageAttributes.MediaType;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Set;
 
+
+import java.util.Optional;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
@@ -35,9 +31,7 @@ import com.EventickNow.model.dto.Mensaje;
 import com.EventickNow.security.dto.JwtDto;
 import com.EventickNow.security.dto.LoginUsuario;
 import com.EventickNow.security.dto.NuevoUsuario;
-import com.EventickNow.security.entity.Rol;
 import com.EventickNow.security.entity.UsuarioEntity;
-import com.EventickNow.security.enums.RolNombre;
 import com.EventickNow.security.jwt.JwtProvider;
 import com.EventickNow.security.service.RolService;
 import com.EventickNow.security.service.UsuarioService;
@@ -76,16 +70,6 @@ public class authController {
 				, nuevoUsuario.getApellidoPaterno(), nuevoUsuario.getCorreoElectronico(), 
 				passwordEncoder.encode(nuevoUsuario.getPassword()),nuevoUsuario.getRoles());
 		usuario.setEstatus(0);
-		
-//		Optional<Rol> usuarioRol = rolService.getByRolNombre(RolNombre.ROLE_USUARIO);
-//		if (usuarioRol.isPresent()) {
-//		    roles.add(usuarioRol.get());
-//		}
-//
-//		Optional<Rol> creadorRol = rolService.getByRolNombre(RolNombre.ROLE_CREADOR);
-//		if (nuevoUsuario.getRoles().contains("creador") && creadorRol.isPresent()) {
-//		    roles.add(creadorRol.get());
-//		}
 		
 		MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
