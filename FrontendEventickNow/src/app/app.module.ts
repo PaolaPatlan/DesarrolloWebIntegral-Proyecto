@@ -21,11 +21,7 @@ import { UsuarioComponent } from './pages/usuario/usuario.component';
     AppComponent,
     RegistroUsuarioComponent,
     InicioComponent,
-    HeaderComponent,
-    LoginComponent,
-    AdministradorComponent,
-    CreadorEventosComponent,
-    UsuarioComponent
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
