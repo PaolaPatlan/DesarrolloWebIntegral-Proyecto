@@ -41,6 +41,14 @@ public class EventoController {
 		
 	}
 	
+	@PostMapping(path = "/boletoCompra/{boletos}",
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Response<EventoEntity>> campraBoleto(@PathVariable("boletos") Integer boletos, @RequestBody EventoEntity evento){
+		Response<EventoEntity> response = eventoService.compraBoletos(boletos, evento);
+		return new ResponseEntity<Response<EventoEntity>> (response, HttpStatus.OK);
+	}
+	
+	
 	@PostMapping(path = "/guardarEvento",
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Response<EventoEntity>> guardarEvento (@RequestParam("imagenFile") MultipartFile imagenFile, @ModelAttribute EventoRequest evento){
