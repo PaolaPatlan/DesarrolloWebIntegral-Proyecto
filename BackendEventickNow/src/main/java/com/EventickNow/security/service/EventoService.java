@@ -51,6 +51,32 @@ public class EventoService {
 		response.setCount(lista.size());
 		return response;
 	}
+	
+	// -----------Compra Boletos -------------------------------------
+		public Response<EventoEntity> compraBoletos(Integer boletos, EventoEntity evento) {
+			Response<EventoEntity> response = new Response<>();
+			
+			Optional<EventoEntity> eventoN = eventoRepository.findById(evento.getIdEvento());
+			
+			
+			if (eventoN == null ) {
+				response.setMessage("No hay resultados");
+			} else {
+				response.setMessage("Consulta correcta");
+			}
+			
+			EventoEntity eventoUpdate = new EventoEntity();
+			eventoUpdate = eventoN.get();
+			Integer boletosActuales = eventoUpdate.getCantBoletos();
+			boletosActuales = boletosActuales - boletos;
+			eventoUpdate.setCantBoletos(boletosActuales);
+			response.setData(eventoUpdate);
+			eventoRepository.save(eventoUpdate);
+			
+			return response;
+			
+			
+		}
 
 	// ----------- Guardar -------------------------------------
 
