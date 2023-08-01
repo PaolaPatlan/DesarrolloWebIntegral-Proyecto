@@ -34,7 +34,7 @@ public class EventoEntity implements Serializable{
 	@Column(name = "ID_EVENTO", length = 30)
 	private Integer idEvento;
 	
-	@Column(name = "NOM_EVENTO", nullable = false, length = 50)
+	@Column(name = "NOM_EVENTO", unique = true, length = 50 )
 	private String nomEvento;
 	
 	@Column(name = "FECHA")
@@ -48,6 +48,12 @@ public class EventoEntity implements Serializable{
 	
 	@Column(name = "ESTATUS", nullable = false)
 	private Integer estatus;
+	
+	@Column(name = "COSTO", nullable = false)
+	private Double costo;
+	
+	@Column(name = "CANT_BOLETOS", nullable = false)
+	private Integer cantBoletos;
 	
 	@Column(name = "IMAGEN", length = 8388608)
 	private byte[] imagen;

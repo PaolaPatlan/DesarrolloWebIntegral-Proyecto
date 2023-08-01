@@ -77,6 +77,8 @@ public class EventoService {
 			evento1.setUbicacion(evento.getUbicacion());
 			evento1.setDetalles(evento.getDetalles());
 			evento1.setEstatus(0);
+			evento1.setCosto(evento.getCosto());
+			evento1.setCantBoletos(evento.getCantBoletos());
 			evento1.setImagen(imagenBytes);
 			
 			evento2 = eventoRepository.save(evento1);
