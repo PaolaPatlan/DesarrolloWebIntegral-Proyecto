@@ -23,6 +23,10 @@ public class EventoRequest {
 	
 	private Integer estatus;
 	
+	private Double costo;
+	
+	private Integer cantBoletos;
+	
 	private MultipartFile imagen;
 	
 	private Integer idOrganizador;

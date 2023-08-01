@@ -20,12 +20,10 @@ import { UsuarioComponent } from './pages/usuario/usuario.component';
   declarations: [
     AppComponent,
     RegistroUsuarioComponent,
-    InicioComponent,
-    HeaderComponent,
-    LoginComponent,
     AdministradorComponent,
-    CreadorEventosComponent,
-    UsuarioComponent
+    LoginComponent,
+    InicioComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

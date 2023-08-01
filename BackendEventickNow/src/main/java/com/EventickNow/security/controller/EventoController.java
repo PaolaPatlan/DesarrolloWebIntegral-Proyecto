@@ -1,5 +1,7 @@
 package com.EventickNow.security.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -8,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,6 +41,14 @@ public class EventoController {
 		
 	}
 	
+	@PostMapping(path = "/boletoCompra/{boletos}",
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Response<EventoEntity>> campraBoleto(@PathVariable("boletos") Integer boletos, @RequestBody EventoEntity evento){
+		Response<EventoEntity> response = eventoService.compraBoletos(boletos, evento);
+		return new ResponseEntity<Response<EventoEntity>> (response, HttpStatus.OK);
+	}
+	
+	
 	@PostMapping(path = "/guardarEvento",
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Response<EventoEntity>> guardarEvento (@RequestParam("imagenFile") MultipartFile imagenFile, @ModelAttribute EventoRequest evento){
@@ -45,11 +57,45 @@ public class EventoController {
 		return new ResponseEntity<Response<EventoEntity>> (response, HttpStatus.OK);
 	}
 	
+	@PostMapping(path = "/consultarEventos/filtros", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Response<EventoEntity>> consultarEventosFiltros(@RequestBody EventoEntity evento){
+		
+		Response<EventoEntity> response = eventoService.consultarEventosFiltros(evento);
+		
+		return new ResponseEntity<Response<EventoEntity>> (response,HttpStatus.OK);
+	}
+	
 	@GetMapping(path = "/consultarEventos/{idOrganizador}",
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Response<EventoEntity>> consultarEventosPorIdOrganizador(@PathVariable("idOrganizador") Integer idOrganizador){
 		
 		Response<EventoEntity> response = eventoService.consultarEventosPorIdOrganizador(idOrganizador);
+		
+		return new ResponseEntity<Response<EventoEntity>> (response,HttpStatus.OK);
+	}
+	
+	
+	@GetMapping(path = "/consultarEventos/pendientes",
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Response<EventoEntity>> consultarEventosPendiente(){
+		
+		Response<EventoEntity> response = eventoService.consultarEventosPendientes();
+		
+		return new ResponseEntity<Response<EventoEntity>> (response,HttpStatus.OK);
+	}
+	
+	@GetMapping(path = "/consultarEventos/aprobados",
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Response<EventoEntity>> consultarEventosAprobados(){
+		
+		Response<EventoEntity> response = eventoService.consultarEventosAprobados();
+		
+		return new ResponseEntity<Response<EventoEntity>> (response,HttpStatus.OK);
+	}
+	
+	@PutMapping(path = "/consultarEventos/actualizar", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Response<EventoEntity>> actualizarEvento(@RequestBody EventoEntity evento) throws IOException {
+		Response<EventoEntity> response = eventoService.cambiarEstatusEvento(evento);
 		
 		return new ResponseEntity<Response<EventoEntity>> (response,HttpStatus.OK);
 	}
