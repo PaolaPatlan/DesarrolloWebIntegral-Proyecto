@@ -9,6 +9,7 @@ import { EventosResponse } from 'src/app/shared/models/administrador';
 })
 export class AdministradorComponent implements OnInit {
 
+  
   eventos: EventosResponse[] = [];
 
   constructor(private adminService: AdministradorService ){}

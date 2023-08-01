@@ -9,6 +9,8 @@ export interface EventosResponse {
     nomEvento: string;
     fecha: Date;
     estatus: number;
+    costo: number;
+    cantBoletos: number;
     ubicacion: string;
     detalles: string;
     imagen: string;
