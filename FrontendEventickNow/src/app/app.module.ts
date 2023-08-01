@@ -20,6 +20,8 @@ import { UsuarioComponent } from './pages/usuario/usuario.component';
   declarations: [
     AppComponent,
     RegistroUsuarioComponent,
+    AdministradorComponent,
+    LoginComponent,
     InicioComponent,
     HeaderComponent
   ],
