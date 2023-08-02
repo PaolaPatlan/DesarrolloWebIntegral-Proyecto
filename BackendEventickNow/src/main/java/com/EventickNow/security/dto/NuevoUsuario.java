@@ -24,7 +24,8 @@ public class NuevoUsuario {
     @NotBlank
     private String password;
     private Integer roles;
-
+    private String clave;
+    
     public String getNombre() {
         return nombre;
     }

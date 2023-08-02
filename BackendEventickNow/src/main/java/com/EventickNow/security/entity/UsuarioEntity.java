@@ -37,6 +37,9 @@ public class UsuarioEntity implements Serializable{
 	@Column(name = "NOMBRE", nullable = false, length = 50)
 	private String nombre;
 	
+	@Column(name = "CLAVE", nullable = false, length = 25)
+	private String clave;
+	
 	@Column(name = "APELLIDO_PATERNO", nullable = false, length = 30)
 	private String apellidoPaterno;
 	
@@ -59,13 +62,14 @@ public class UsuarioEntity implements Serializable{
 	    }
 
 	    public UsuarioEntity(@NotNull String nombre, @NotNull String apellidoM, @NotNull String apellidoP,@NotNull String correoElectronico, @NotNull String password,
-	    		@NotNull Integer rol) {
+	    		@NotNull Integer rol, @NotNull String clave) {
 	        this.nombre = nombre;
 	        this.apellidoMaterno = apellidoM;
 	        this.apellidoPaterno = apellidoP;
 	        this.correoElectronico = correoElectronico;
 	        this.password = password;
 	        this.roles = rol;
+	        this.clave = clave;
 	    }
 
 	    public int getId() {
@@ -116,5 +120,13 @@ public class UsuarioEntity implements Serializable{
 
 	    public void setRoles(Integer roles) {
 	        this.roles = roles;
+	    }
+	    
+	    public String getClave() {
+	        return clave;
+	    }
+
+	    public void setClave(String clave) {
+	        this.clave = clave;
 	    }
 }

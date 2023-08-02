@@ -24,6 +24,13 @@ newUser(user: registerUser):Observable<any>{
 }
 
 /*
+  función para confirmar nuevo usuario
+*/
+confirmUser(user: registerUser):Observable<any>{
+  return this.http.get(`${ environment.baseUrl }/auth/confirmar/${user.correoElectronico}`).pipe(catchError( (error) => this.handlerError(error)));
+}
+
+/*
   función para errores
 */
 handlerError(error: any): Observable<never> {
