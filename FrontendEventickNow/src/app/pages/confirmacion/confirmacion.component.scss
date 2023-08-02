@@ -1,0 +1,20 @@
+.custom-card-width {
+    max-width: 700px; /* Ancho máximo de 700px */
+    margin: 200px auto 0; /* Centrar horizontalmente el mat-card */
+  }
+
+  .mat-raised{
+    background-color: #8437D3;
+    color: white;
+  }
+
+  .mat-card-header {
+     margin-left: 130px;
+  }
+  
+  /* Centrar el botón horizontalmente */
+  .mat-card-actions {
+    margin-right: 270px
+  }
+
+  
