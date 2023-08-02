@@ -13,6 +13,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { AdministradorComponent } from './pages/administrador/administrador.component';
 import { CreadorEventosComponent } from './pages/creador-eventos/creador-eventos.component';
 import { UsuarioComponent } from './pages/usuario/usuario.component';
+import { ConfirmacionComponent } from './pages/confirmacion/confirmacion.component';
 
 
 
@@ -21,6 +22,9 @@ import { UsuarioComponent } from './pages/usuario/usuario.component';
     AppComponent,
     RegistroUsuarioComponent,
     AdministradorComponent,
+    CreadorEventosComponent,
+    UsuarioComponent,
+    ConfirmacionComponent,
     LoginComponent,
     InicioComponent,
     HeaderComponent

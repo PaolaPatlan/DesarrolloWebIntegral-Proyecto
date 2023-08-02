@@ -3,6 +3,8 @@ package com.EventickNow.security.controller;
 
 
 import java.util.Optional;
+import java.util.Random;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
@@ -60,15 +62,30 @@ public class authController {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
+	public static String generarNumerosAleatorios(int longitud) {
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < longitud; i++) {
+            int numeroAleatorio = random.nextInt(10); // Genera un número aleatorio entre 0 y 9
+            sb.append(numeroAleatorio);
+        }
+
+        return sb.toString();
+    }
+
+	
 	@PostMapping("/nuevo")
 	public ResponseEntity<?> nuevo(@Valid @RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult) throws MessagingException{
 		if(bindingResult.hasErrors())
 			return new ResponseEntity(new Mensaje("Campos incorrectos"), HttpStatus.BAD_REQUEST);
 		if(usuarioService.existsByCorreoE(nuevoUsuario.getCorreoElectronico()))
 			return new ResponseEntity(new Mensaje("Ese email ya existe"), HttpStatus.BAD_REQUEST);
+		String clave = generarNumerosAleatorios(25);
+		nuevoUsuario.setClave(clave);
 		UsuarioEntity usuario = new UsuarioEntity(nuevoUsuario.getNombre(), nuevoUsuario.getApellidoMaterno() 
 				, nuevoUsuario.getApellidoPaterno(), nuevoUsuario.getCorreoElectronico(), 
-				passwordEncoder.encode(nuevoUsuario.getPassword()),nuevoUsuario.getRoles());
+				passwordEncoder.encode(nuevoUsuario.getPassword()),nuevoUsuario.getRoles(), nuevoUsuario.getClave());
 		usuario.setEstatus(0);
 		
 		MimeMessage message = javaMailSender.createMimeMessage();
@@ -77,7 +94,7 @@ public class authController {
 		helper.setSubject("Confirmación de registro");
 		String htmlContent = "<html><body>" + "<p>Hola "+usuario.getNombre() + ",</p>"
 				+ "<p>Gracias por registrarte en EventickNow. Para confirmar tu registro, haz clic en siguiente botón:</p>"
-				+ "<a href='http://localhost:8080/auth/confirmar/" + usuario.getCorreoElectronico()
+				+ "<a href='http://localhost:4200/confirmar/" +  usuario.getClave() 
 				+ "'><button style='background-color: white; color:#8437D3; padding: 10px; border-radius: 25px; border-color: #8437D3; border-width: 1px;'>Confirmar registro</button></a>"
 				+ "<p>Saludos,<br>El equipo de EventickNow</p>" + "</body></html>";
 		helper.setText(htmlContent, true);
@@ -96,11 +113,11 @@ public class authController {
 	
 	@PostMapping("/login")
 	public ResponseEntity<JwtDto> login(@Valid @RequestBody LoginUsuario loginUsario, BindingResult bindingResult){
+		Optional<UsuarioEntity>  usuario = Optional.empty();
+		usuario = usuarioService.getByCorreoEs(loginUsario.getCorreoElectronico());
 		
 		if(usuarioService.existsByCorreoE(loginUsario.getCorreoElectronico())){
 			
-			Optional<UsuarioEntity>  usuario = Optional.empty();
-			usuario = usuarioService.getByCorreoEs(loginUsario.getCorreoElectronico());
 			
 			if (usuario.get().getEstatus() == 0) {
 				return new ResponseEntity(new Mensaje("Debes validar tu registro"), HttpStatus.BAD_REQUEST);
@@ -115,8 +132,8 @@ public class authController {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtProvider.genereteToken(authentication);
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-		JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(), userDetails.getAuthorities()); 
-		//JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(), userDetails.getAuthorities()); 
+		JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(),usuario.get().getIdUsuario(), userDetails.getAuthorities()); 
+		
 		return new ResponseEntity(jwtDto, HttpStatus.OK);
 	}
 	
