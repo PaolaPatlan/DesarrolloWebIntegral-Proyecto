@@ -21,13 +21,13 @@ import { ConfirmacionComponent } from './pages/confirmacion/confirmacion.compone
   declarations: [
     AppComponent,
     RegistroUsuarioComponent,
-    InicioComponent,
-    HeaderComponent,
-    LoginComponent,
     AdministradorComponent,
     CreadorEventosComponent,
     UsuarioComponent,
-    ConfirmacionComponent
+    ConfirmacionComponent,
+    LoginComponent,
+    InicioComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
