@@ -96,11 +96,11 @@ public class authController {
 	
 	@PostMapping("/login")
 	public ResponseEntity<JwtDto> login(@Valid @RequestBody LoginUsuario loginUsario, BindingResult bindingResult){
+		Optional<UsuarioEntity>  usuario = Optional.empty();
+		usuario = usuarioService.getByCorreoEs(loginUsario.getCorreoElectronico());
 		
 		if(usuarioService.existsByCorreoE(loginUsario.getCorreoElectronico())){
 			
-			Optional<UsuarioEntity>  usuario = Optional.empty();
-			usuario = usuarioService.getByCorreoEs(loginUsario.getCorreoElectronico());
 			
 			if (usuario.get().getEstatus() == 0) {
 				return new ResponseEntity(new Mensaje("Debes validar tu registro"), HttpStatus.BAD_REQUEST);
@@ -115,8 +115,8 @@ public class authController {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtProvider.genereteToken(authentication);
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-		JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(), userDetails.getAuthorities()); 
-		//JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(), userDetails.getAuthorities()); 
+		JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(),usuario.get().getIdUsuario(), userDetails.getAuthorities()); 
+		
 		return new ResponseEntity(jwtDto, HttpStatus.OK);
 	}
 	
