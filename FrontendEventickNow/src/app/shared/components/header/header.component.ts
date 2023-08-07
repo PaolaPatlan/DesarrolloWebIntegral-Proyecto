@@ -54,7 +54,6 @@ export class HeaderComponent {
             element.imagen = imageUrl;
           });
         }
-
         console.log(data.list);
       });
     } else {
