@@ -10,6 +10,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatListModule } from '@angular/material/list'; // Importa el módulo MatListModule
+
 
 
   
@@ -18,6 +20,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 const modulos: any = [
   MatButtonModule,
+  MatListModule,
   MatCardModule,
   MatInputModule,
   MatIconModule,
