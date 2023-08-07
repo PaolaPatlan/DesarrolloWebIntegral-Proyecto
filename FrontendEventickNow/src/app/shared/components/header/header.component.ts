@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-import { EventoService } from 'src/app/services/evento.service';
+import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { Evento } from '../../models/evento';
+import { UsuarioService } from 'src/app/services/usuario.service';
+
 
 @Component({
   selector: 'app-header',
@@ -27,7 +27,7 @@ export class HeaderComponent {
 
   resultadosBusqueda: any[] = [];
 
-  constructor(private eventoService: EventoService) {
+  constructor(private eventoService: UsuarioService) {
     // Suscripción para realizar la búsqueda después de un retraso de 500ms
     this.busquedaSubject
       .pipe(debounceTime(500), distinctUntilChanged())
@@ -69,6 +69,5 @@ export class HeaderComponent {
       img.onload = () => resolve(imageUrl);
     });
   }
-
 
 }
