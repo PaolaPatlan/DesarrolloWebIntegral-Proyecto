@@ -1,11 +1,29 @@
 <mat-toolbar class="mat-elevation-z6">
     <span routerLink="">EventickNow</span>
-    <span class="example-spacer"></span>
+    <span class="example-spacer">
+        <mat-form-field>
+          <input matInput placeholder="Buscar eventos" [(ngModel)]="terminoBusqueda" (input)="realizarBusqueda()">
+        </mat-form-field>
+      </span>
     <button routerLink="registro" mat-button>Registrarme</button>
     <button routerLink="login" mat-button>Iniciar sesión</button>
 </mat-toolbar>
 
-<link
-rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-/>
+<div class="search-container">
+    <mat-form-field appearance="outline" class="search-input">
+      <input matInput placeholder="Buscar eventos" [(ngModel)]="terminoBusqueda" (input)="realizarBusqueda()">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+    
+    <div *ngIf="resultadosBusqueda.length > 0" class="search-results">
+      <mat-card *ngFor="let resultado of resultadosBusqueda" class="search-card">
+        <div class="image-container">
+          <img id="imagen" [src]="resultado.imagen" alt="Evento Image" *ngIf="resultado.imagen">
+        </div>
+        <p class="letra">{{resultado.nomEvento}} {{ resultado.detalles }} {{ resultado.ubicacion }} {{ resultado.fecha }}</p>
+      </mat-card>
+    </div>
+</div>
+  
+  
+
