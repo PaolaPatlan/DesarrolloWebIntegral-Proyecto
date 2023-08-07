@@ -1,11 +1,46 @@
 <!-- Botones para los filtros de búsqueda -->
 <mat-card id="topBar">
   <mat-card-content id="barBtn">
-    <h2>Hola Usuario X</h2>
+      <mat-form-field appearance="outline" class="search-input">
+        <input matInput placeholder="Buscar eventos" [(ngModel)]="terminoBusqueda" (input)="realizarBusqueda()">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
   </mat-card-content>
 </mat-card>
 
 <div>
+    <div class="search-container">
+    
+    
+        <div *ngIf="resultadosBusqueda.length > 0" class="search-results">
+          <mat-card *ngFor="let resultado of resultadosBusqueda" class="search-card">
+            <div class="image-container">
+              <img id="imagen" [src]="resultado.imagen" alt="Evento Image" *ngIf="resultado.imagen">
+            </div>
+            <mat-card-content>
+                <p>Ciudad: {{ resultado.ubicacion }}</p>
+                <p>Descripción: {{ resultado.detalles }}</p>
+                <p>Cantidad de lugares: {{ resultado.cantBoleto }}</p>
+                <p>Costo: ${{ resultado.costo }}</p>
+                <mat-form-field class="example-ripple-form-field">
+                  <mat-label>Cantidad</mat-label>
+                  <input matInput [(ngModel)]="numEven" type="number" />
+                </mat-form-field>
+              </mat-card-content>
+              <mat-card-actions align="end">
+                <!-- Botón Paypal -->
+                <button
+                  id="btnTodos"
+                  mat-raised-button
+                  color="primary"
+                  (click)="eventosTodos()"
+                >
+                  Comprar
+                </button>
+              </mat-card-actions>
+          </mat-card>
+        </div>
+    </div>
   <!-- Cards para los eventos creados -->
   <div class="example-card" *ngFor="let evento of eventos">
     <mat-card>
