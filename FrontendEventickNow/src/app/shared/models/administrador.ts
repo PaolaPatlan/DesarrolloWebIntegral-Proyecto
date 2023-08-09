@@ -15,5 +15,6 @@ export interface EventosResponse {
     detalles: string;
     imagen: string;
     imagenFile: null;
+    numEven: number;
 
 }
