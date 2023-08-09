@@ -7,6 +7,7 @@ import { EventosResponse } from 'src/app/shared/models/administrador';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Evento } from 'src/app/shared/models/evento';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-usuario',
@@ -16,6 +17,20 @@ import { Evento } from 'src/app/shared/models/evento';
 export class UsuarioComponent {
   eventos: EventosResponse[] = [];
   numEven: number;
+  boton:false;
+
+  public terminoBusqueda = '';
+  evento: Evento = { 
+    idEvento   :0,
+    nomEvento  :'',
+    fecha      :'',
+    ubicacion  :'',
+    detalles   :'',
+    estatus    :'',
+    costo      :'',
+    cantBoleto :'',
+    imagen     :'',
+  };
 
   constructor(private userService: UsuarioService){
      // Suscripción para realizar la búsqueda después de un retraso de 500ms
@@ -30,9 +45,57 @@ export class UsuarioComponent {
     this.eventosTodos();
   }
 
+  comparEventos(eventoId: number, numEven:number, boletos:number){
+    this.evento.idEvento = eventoId;
+    console.log(this.evento.idEvento);
+  
+
+    console.log("Esta es la cantidad de boletos"+numEven)
+
+    if (numEven > boletos ) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'No puedes compar mas boletos de los existentes',
+        showConfirmButton: false,
+        timer: 1500
+      });
+      this.eventosTodos();
+      return;
+    }
+
+    this.userService.comparBoletos(this.evento, numEven).subscribe((data) =>{
+
+      if (data.data.cantBoletos <= 0) {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Los boletos se han agotado',
+          showConfirmButton: false,
+          timer: 1500
+        });
+        this.eventosTodos();
+        return;
+      }
+
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Se comprado el boleto correctamente',
+        showConfirmButton: false,
+        timer: 1500
+      });
+  
+      // Vuelve a cargar la lista de eventos después de realizar la compra
+      this.eventosTodos();
+    });
+  }
+  
+
   eventosTodos(): void {
+    this.numEven = 0;
     this.userService.getEventosTod().subscribe((data) => {
-      this.eventos = data.list;
+      this.eventos = data.list.map((evento) => ({ ...evento, numEven: 0 }));
       // Procesa la imagen
       this.eventos.forEach((evento) => {
         this.getBase64Image(evento.imagen).then((imageUrl) => {
@@ -40,21 +103,11 @@ export class UsuarioComponent {
         });
       });
     });
+    this.realizarBusquedaEnServidor(this.terminoBusqueda);
   }
 
   private busquedaSubject = new Subject<string>();
-  public terminoBusqueda = '';
-  evento: Evento = { 
-    idEvento   :'',
-    nomEvento  :'',
-    fecha      :'',
-    ubicacion  :'',
-    detalles   :'',
-    estatus    :'',
-    costo      :'',
-    cantBoleto :'',
-    imagen     :'',
-  }; // Inicializar el objeto con la propiedad detalles
+  // Inicializar el objeto con la propiedad detalles
 
   resultadosBusqueda: any[] = [];
 
@@ -69,7 +122,7 @@ export class UsuarioComponent {
       this.evento.detalles = terminoBusqueda;
       // Implementa aquí la lógica para buscar eventos en tu servidor
       this.userService.buscarEvento(this.evento).subscribe(data => {
-        this.resultadosBusqueda = data.list;
+        this.resultadosBusqueda = data.list.map((evento) => ({ ...evento, numEven: 0 }));
         for (let index = 0; index < this.resultadosBusqueda.length; index++) {
           const element = this.resultadosBusqueda[index];
           this.getBase64Image(element.imagen).then((imageUrl) => {

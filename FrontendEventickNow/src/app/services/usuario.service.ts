@@ -29,6 +29,10 @@ export class UsuarioService {
     return this.http.post(`${ environment.baseUrl }/evento/consultarEventos/filtros`, evento).pipe(catchError( (error) => this.handlerError(error)));
   }
 
+  comparBoletos(evento: Evento, boletos: number):Observable<any>{
+    return this.http.post(`${ environment.baseUrl }/evento/boletoCompra/${boletos}`, evento).pipe(catchError( (error) => this.handlerError(error)));
+  }
+
 
   /*
 función para errores

@@ -14,7 +14,7 @@ export class HeaderComponent {
   private busquedaSubject = new Subject<string>();
   public terminoBusqueda = '';
   evento: Evento = { 
-    idEvento   :'',
+    idEvento   :0,
     nomEvento  :'',
     fecha      :'',
     ubicacion  :'',
