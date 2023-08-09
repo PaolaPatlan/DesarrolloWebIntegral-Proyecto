@@ -106,6 +106,12 @@ public class EventoService {
 			evento1.setCantBoletos(evento.getCantBoletos());
 			evento1.setImagen(imagenBytes);
 
+			try {
+				evento1.setImagen(imagenFile.getBytes());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 			evento2 = eventoRepository.save(evento1);
 
 			response.setStatus("OK");

@@ -58,8 +58,8 @@ public class EventoEntity implements Serializable{
 	@Column(name = "IMAGEN", length = 8388608)
 	private byte[] imagen;
 	
-	@Transient
-    private MultipartFile imagenFile;
+//	@Transient
+//  private MultipartFile imagenFile;
 	
 	
 	@ManyToOne

@@ -50,10 +50,11 @@ public class EventoController {
 	
 	
 	@PostMapping(path = "/guardarEvento",
+			consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Response<EventoEntity>> guardarEvento (@RequestParam("imagenFile") MultipartFile imagenFile, @ModelAttribute EventoRequest evento){
+	public ResponseEntity<Response<EventoEntity>> guardarEvento (@RequestParam MultipartFile imagen, @ModelAttribute EventoRequest evento){
 		
-		Response<EventoEntity> response = eventoService.guardarEvento(imagenFile, evento);
+		Response<EventoEntity> response = eventoService.guardarEvento(imagen, evento);
 		return new ResponseEntity<Response<EventoEntity>> (response, HttpStatus.OK);
 	}
 	

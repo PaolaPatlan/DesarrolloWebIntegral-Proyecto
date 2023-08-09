@@ -7,6 +7,7 @@ import { AdministradorComponent } from './pages/administrador/administrador.comp
 import { CreadorEventosComponent } from './pages/creador-eventos/creador-eventos.component';
 import { UsuarioComponent } from './pages/usuario/usuario.component';
 import { ConfirmacionComponent } from './pages/confirmacion/confirmacion.component';
+import { CrearEventoComponent } from './pages/crear-evento/crear-evento.component';
 
 
 const routes: Routes = [
@@ -31,6 +32,10 @@ const routes: Routes = [
   {
     path: 'creador', 
     component: CreadorEventosComponent
+  },
+  {
+    path: 'creador/crearEvento', 
+    component: CrearEventoComponent
   },
   {
     path: 'usuario', 
