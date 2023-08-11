@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router, Route } from '@angular/router';
 import { LoginService } from 'src/app/services/login.service';
 import { BaseForm } from 'src/app/shared/utils/base-form';
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +13,7 @@ import { BaseForm } from 'src/app/shared/utils/base-form';
 export class LoginComponent implements OnInit{
 
   loginForm: any;
+  idUsuario: number;
 
   //Crea las intancias a utilizar 
   constructor(
@@ -26,18 +27,35 @@ export class LoginComponent implements OnInit{
     //Aplica las validaciones necesarias para el formulario de registro registerForm
     this.loginForm = this.fb.group({
       correoElectronico: ['',[Validators.required,Validators.email]],
-      password: ['',[Validators.required,Validators.maxLength(20)]],
+      password: ['',[Validators.required,Validators.maxLength(10)]],
 
     })
   }
 
-   // FUNCION PARA LOGEARSE 
-   login(){
-    console.log(this.loginForm.value)
-    this.loginService.login(this.loginForm.value).subscribe (data=>{
-      console.log(data)
-    })
+     // ***************************** LOGIN ***********************************
+  login() {
+    console.log(this.loginForm.value);
+    this.loginService.login(this.loginForm.value).subscribe((data) => {
+      console.log(data);
+      this.idUsuario = data.idUsuario; 
+      localStorage.setItem('idUsuario', this.idUsuario.toString()); 
+    },
+    (error)=>{
+      console.error(error);
+        // Mostrar una alerta de error utilizando SweetAlert2
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Error de inicio de sesión',
+          text: 'Correo electrónico o contraseña incorrectos',
+          showConfirmButton: false,
+          timer: 4500
+        })
+    });
+  }
 
+  logout(){
+    this.loginService.logout();
   }
 
 }

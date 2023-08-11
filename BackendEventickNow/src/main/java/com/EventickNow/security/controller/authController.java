@@ -35,7 +35,6 @@ import com.EventickNow.security.dto.LoginUsuario;
 import com.EventickNow.security.dto.NuevoUsuario;
 import com.EventickNow.security.entity.UsuarioEntity;
 import com.EventickNow.security.jwt.JwtProvider;
-import com.EventickNow.security.service.RolService;
 import com.EventickNow.security.service.UsuarioService;
 
 
@@ -52,9 +51,6 @@ public class authController {
 	
 	@Autowired
 	UsuarioService usuarioService;
-	
-	@Autowired
-	RolService rolService;
 	
 	@Autowired
 	JwtProvider jwtProvider;

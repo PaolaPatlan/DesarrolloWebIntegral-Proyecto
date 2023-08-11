@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { EventosResponse } from 'src/app/shared/models/administrador';
+//pdf
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+//Búsqueda
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Evento } from 'src/app/shared/models/evento';
@@ -13,10 +17,19 @@ import Swal from 'sweetalert2';
   styleUrls: ['./usuario.component.scss']
 })
 
-export class UsuarioComponent {
+export class UsuarioComponent implements OnInit{
   eventos: EventosResponse[] = [];
   numEven: number;
   boton:false;
+  totlBoletos: number = 0;
+  totalCosto: number = 0;
+
+  idCompra: number = Math.floor((Math.random() * 1200) + 1);
+
+  //Paypal 
+  @ViewChild('paymentRef', {static:true}) paymentRef!: ElementRef;
+
+  //Paypal fin 
 
   public terminoBusqueda = '';
   evento: Evento = { 
@@ -41,25 +54,88 @@ export class UsuarioComponent {
   }
 
   ngOnInit(): void {
-    this.eventosTodos();
+    this.eventosAprobados();
+    this.obtenerCB(this.totlBoletos);
+    window.paypal.Buttons(
+      {
+        style:{
+          layout: 'horizontal',
+          color: 'silver',
+          shape: 'rect',
+          label: 'paypal'
+        },
+        createOrder: (data:any, actions: any) =>{
+          return actions.order.create({
+            purchase_units: [
+              {
+                amount: {
+                  value: this.totalCosto.toString(),
+                  currency_code: 'MXN'
+                }
+              }
+            ]
+          })
+        },
+        onApprove : (data:any, actions:any) =>{
+          return actions.order.capture().then((details: any)=>{
+            if (details.status === 'COMPLETED'){
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Compra exitosa',
+                text: 'Boletos adquiridos: ' + this.totlBoletos,
+                footer:'ID compra: ' + this.idCompra,
+                showConfirmButton: true,
+                confirmButtonText: 'Descargar'               
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  this.generatePDF();
+                }
+              });;
+            }
+            this.totalCosto = 0;
+            this.eventosAprobados();
+          });
+        },
+        onError:() =>{
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Debes seleccionar por lo menos un boleto',
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+      }
+    ).render(this.paymentRef.nativeElement);
+  }
+
+   obtenerCB(boletosC: number){
+    this.totlBoletos = boletosC;
   }
 
   comparEventos(eventoId: number, numEven:number, boletos:number){
     this.evento.idEvento = eventoId;
     console.log(this.evento.idEvento);
     console.log("Esta es la cantidad de boletos"+numEven)
+ 
+    this.evento.idEvento = eventoId;
+
     if (numEven > boletos ) {
       Swal.fire({
         position: 'center',
         icon: 'error',
-        title: 'No puedes compar mas boletos de los existentes',
+        title: 'No puedes comprar más boletos de los existentes',
         showConfirmButton: false,
         timer: 1500
       });
-      this.eventosTodos();
+      this.eventosAprobados();
       return;
     }
-    this.userService.comparBoletos(this.evento, numEven).subscribe((data) =>{
+ 
+
+    this.userService.comprarBoletos(this.evento, numEven).subscribe((data) =>{
+
       if (data.data.cantBoletos <= 0) {
         Swal.fire({
           position: 'center',
@@ -68,26 +144,34 @@ export class UsuarioComponent {
           showConfirmButton: false,
           timer: 1500
         });
-        this.eventosTodos();
+        this.eventosAprobados();
         return;
       }
       Swal.fire({
         position: 'center',
         icon: 'success',
-        title: 'Se comprado el boleto correctamente',
+        title: 'Se ha comprado el boleto correctamente',
         showConfirmButton: false,
         timer: 1500
       });
       // Vuelve a cargar la lista de eventos después de realizar la compra
-      this.eventosTodos();
+      this.totalCosto = 0;
+      this.eventosAprobados();
     });
   }
 
-  eventosTodos(): void {
-    this.numEven = 0;
-    this.userService.getEventosTod().subscribe((data) => {
+  
+  actualizarTotal(eventoId: number, boletos:number, costo:number){
+    this.evento.idEvento = eventoId;
+    this.totlBoletos = boletos;
+    this.totalCosto = boletos * costo;
+  }
+
+  eventosAprobados(): void {
+    this.userService.getEventosApr().subscribe((data) => {
       this.eventos = data.list.map((evento) => ({ ...evento, numEven: 0 }));
-      // Procesa la imagen
+
+      // Procesa la imagen 
       this.eventos.forEach((evento) => {
         this.getBase64Image(evento.imagen).then((imageUrl) => {
           evento.imagen = imageUrl;
@@ -122,7 +206,6 @@ export class UsuarioComponent {
           });
         }
 
-        console.log(data.list);
       });
     } else {
       this.resultadosBusqueda = [];
@@ -137,5 +220,52 @@ export class UsuarioComponent {
       img.onload = () => resolve(imageUrl);
     });
   }
-  
+
+  //Genera el recibo 
+  generatePDF() {
+    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+    const documentDefinition = {
+      pageSize: { width: 400, height: 300 }, 
+      content: [
+        { 
+          alignment: 'center',
+          text: 'EventickNow',
+          style: 'header',
+          fontSize: 30,
+          bold: true,
+          margin: [0, 10],
+      },
+      {
+        canvas: [
+          { type: 'line', x1: 0, y1: 10, x2: 310, y2: 10, lineWidth: 1, lineColor: '#8437D3' }
+        ]
+      },
+        { 
+          alignment: 'center',
+          text: 'Gracias por tu compra',
+          style: 'subheader',
+          fontSize: 20,
+          bold: false,
+          margin: [0, 10],
+      },
+      { 
+        alignment: 'left',
+        text: `Boletos comprados: ${this.totlBoletos}`,
+        fontSize: 15,
+        bold: false,
+        margin: [0, 10],
+    },
+    { 
+      alignment: 'left',
+      text: `ID de compra: ${this.idCompra}`,
+      fontSize: 15,
+      bold: false,
+      margin: [0, 10],
+  }
+      ]
+    };
+
+    const nombre = 'Recibo.pdf';
+    pdfMake.createPdf(documentDefinition).download(nombre);
+  }
 }
