@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdministradorService } from 'src/app/services/administrador.service';
 import { EventosResponse } from 'src/app/shared/models/administrador';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-administrador',
@@ -9,6 +10,8 @@ import { EventosResponse } from 'src/app/shared/models/administrador';
 })
 export class AdministradorComponent implements OnInit {
 
+  //Mostrar botón de aprobar
+  mostrarBoton :boolean = true;
   
   eventos: EventosResponse[] = [];
 
@@ -38,6 +41,7 @@ export class AdministradorComponent implements OnInit {
     eventosAprobados(): void {
       this.adminService.getEventosApr().subscribe((data) => {
         this.eventos = data.list;
+        this.mostrarBoton = false;
   
         // Procesa la imagen 
         this.eventos.forEach((evento) => {
@@ -81,11 +85,24 @@ export class AdministradorComponent implements OnInit {
     evento.estatus = newEstatus;
     this.adminService.updateEstatus(evento.idEvento, newEstatus).subscribe(
       (updatedEvento) => {
-        console.log('Estatus updated on the server:', updatedEvento);
-        window.location.reload();
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Se ha aprobado el evento exitosamente.',
+          showConfirmButton: false,
+          timer: 1500
+        });console.log('Estatus updated on the server:', updatedEvento);
+        this.eventosTodos();
+
       },
       (error) => {
-        console.error('Error updating estatus on the server:', error);
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'No se ha logrado aprobar el evento.',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
     );
   }
@@ -98,12 +115,25 @@ export class AdministradorComponent implements OnInit {
       
           if(idEvento){
             this.adminService.deleteEvento(idEvento).subscribe( ()=> {
-              console.log("Evento eliminado exitosamente");
-              window.location.reload();
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Se ha rechazado el evento exitosamente.',
+                showConfirmButton: false,
+                timer: 1500
+              });
+              this.eventosTodos();
             });
           }
           (error) => {
-            console.error('Evento no eliminado exitosamente', error);
+            Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: 'No se ha logrado rechazar el evento.',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            this.eventosTodos();
         }
       
       }

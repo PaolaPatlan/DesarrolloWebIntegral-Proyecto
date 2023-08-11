@@ -16,6 +16,7 @@
         <mat-card-subtitle>Fecha: {{evento.fecha | date:'yyyy-MM-dd'}}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
+        <img id="imagen" [src]="evento.imagen" alt="Evento Image" *ngIf="evento.imagen">
         <p>Ciudad: {{evento.ubicacion}}</p>
         <p>
           Descripción: {{evento.detalles}}
@@ -24,10 +25,10 @@
         <p>Costo: ${{evento.costo}}</p>
         <p *ngIf="evento.estatus === 0">Estatus del evento: No aprobado</p>
         <p *ngIf="evento.estatus === 1">Estatus del evento: Aprobado</p>
-        <img id="imagen" [src]="evento.imagen" alt="Evento Image" *ngIf="evento.imagen">
+        
       </mat-card-content>
       <mat-card-actions align="end">
-        <button mat-button  (click)="cambiaEstatus(evento, 1)">Aprobar</button>
+        <button mat-button *ngIf="mostrarBoton"  (click)="cambiaEstatus(evento, 1)">Aprobar</button>
         <button mat-button (click)="deleteEvento(evento.idEvento)">Rechazar</button>
       </mat-card-actions>
     </mat-card>
