@@ -1,19 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from 'src/app/services/usuario.service';
-
 import { EventosResponse } from 'src/app/shared/models/administrador';
-
-//Búsqueda
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Evento } from 'src/app/shared/models/evento';
 import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-usuario',
   templateUrl: './usuario.component.html',
   styleUrls: ['./usuario.component.scss']
 })
+
 export class UsuarioComponent {
   eventos: EventosResponse[] = [];
   numEven: number;
@@ -42,18 +41,13 @@ export class UsuarioComponent {
   }
 
   ngOnInit(): void {
-    this.userService.eventos$.subscribe((eventos) => {
-      this.eventos = eventos;
     this.eventosTodos();
   }
 
   comparEventos(eventoId: number, numEven:number, boletos:number){
     this.evento.idEvento = eventoId;
     console.log(this.evento.idEvento);
-  
-
     console.log("Esta es la cantidad de boletos"+numEven)
-
     if (numEven > boletos ) {
       Swal.fire({
         position: 'center',
@@ -65,9 +59,7 @@ export class UsuarioComponent {
       this.eventosTodos();
       return;
     }
-
     this.userService.comparBoletos(this.evento, numEven).subscribe((data) =>{
-
       if (data.data.cantBoletos <= 0) {
         Swal.fire({
           position: 'center',
@@ -79,7 +71,6 @@ export class UsuarioComponent {
         this.eventosTodos();
         return;
       }
-
       Swal.fire({
         position: 'center',
         icon: 'success',
@@ -87,12 +78,10 @@ export class UsuarioComponent {
         showConfirmButton: false,
         timer: 1500
       });
-  
       // Vuelve a cargar la lista de eventos después de realizar la compra
       this.eventosTodos();
     });
   }
-  
 
   eventosTodos(): void {
     this.numEven = 0;
@@ -148,4 +137,5 @@ export class UsuarioComponent {
       img.onload = () => resolve(imageUrl);
     });
   }
+  
 }
