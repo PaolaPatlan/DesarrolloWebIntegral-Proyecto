@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CreadorService } from 'src/app/services/creador.service';
 import { EventoEntity } from 'src/app/shared/models/eventoEntity';
@@ -9,6 +9,7 @@ import { Response } from 'src/app/shared/models/response';
 
 import Swal from 'sweetalert2';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-crear-evento',
@@ -17,110 +18,124 @@ import { ErrorStateMatcher } from '@angular/material/core';
 })
 export class CrearEventoComponent implements OnInit {
 
-  eventoForm: any;
   selectImagen: FileList;
   public previsualizacion: string;
-  currentFile: File ;
-  public fileField='';
+  currentFile: File;
+  public fileField = '';
+  public formBuilder: FormBuilder;
+  eventoForm: FormGroup;
 
   datos: [];
-  evento = new EventoRequest();
-  
+  public evento = new EventoRequest;
+
+  detallesN: any;
+  nomEventoN: any;
+  fechaN: any;
+  estatusN: any;
+  costoN: any;
+  cantBoletosN: any;
+  ubicacionN: any;
+  idOrganizadorN: any;
+
   nomEvento = new FormControl('', [Validators.required]);
   fecha = new FormControl('', [Validators.required]);
   estatus = new FormControl('');
   costo = new FormControl('', [Validators.required]);
-  cantBoletos  = new FormControl('', [Validators.required]);
-  ubicacion  = new FormControl('', [Validators.required]);
-  detalles  = new FormControl('', [Validators.required]);
+  cantBoletos = new FormControl('', [Validators.required]);
+  ubicacion = new FormControl('', [Validators.required]);
+  detalles = new FormControl('', [Validators.required]);
   idOrganizador = new FormControl('', [Validators.required]);
-
   matcher = new ErrorStateMatcher();
+
 
   constructor(
     private fb: FormBuilder,
     public baseForm: BaseForm,
     private router: Router,
-    private creadorService: CreadorService
-  ) {}
+    private creadorService: CreadorService,
+    private userService: UsuarioService
+  ) {
+    this.evento.cantBoletos = 0;
+    this.evento.costo = 0;
+    this.evento.detalles = '';
+    this.evento.idOrganizador = 0;
+    this.evento.multipartFile = null
+    this.eventoForm = this.fb.group({
+      'cantBoletos': Validators.required,
+      'multipartFile': [null],
+      'bytesImagen': [null],
+      'detalles': Validators.required,
+      'idOrganizador': Validators.required
+    });
+  }
 
   ngOnInit(): void {
-    
-  }
-
-  crearEvento(){
-    
-    this.currentFile = this.selectImagen.item(0);
-
-    this.creadorService.crearEvento(this.evento, this.currentFile).subscribe((data:Response<EventoEntity>)=>{
-      console.log(data)
-
-      Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'Evento creado correctamente',
-              showConfirmButton: false,
-              timer: 1500
-        
-              
-            });
+    this.eventoForm = this.fb.group({
+      'cantBoletos': Validators.required,
+      'multipartFile': [null],
+      'bytesImagen': [null],
+      'detalles': Validators.required,
+      'idOrganizador': Validators.required
     })
   }
-  
-  // imagen
-selectFile(event: any ): void {
 
-  this.selectImagen = event.target.files;
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    this.evento.multipartFile = file;
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      const image = document.getElementById('previewImage');
+      image.setAttribute('src', e.target.result);
+    };
+    reader.readAsDataURL(file);
+  }
 
- const file :File = event.target.files[0];
-}
 
-// ********* METODO SUBIR ARCHIVOS ********** //
-openBottomSheet(){
+  private convertirFecha(fecha: string): string {
+    const date = new Date(fecha);
+    return date.toISOString().split('T')[0]; // Convierte a formato 'yyyy-MM-dd'
+  }
 
-}
+  crearEvento() {
 
-// crearEvento(event: Event) {
-//   const idUsuario = +localStorage.getItem('idUsuario');
+    this.evento.idOrganizador = 11;
+    this.evento.detalles = this.detallesN
+    this.evento.cantBoletos = this.cantBoletosN;
+    this.evento.costo = this.costoN;
+    this.evento.ubicacion = this.ubicacionN;
+    this.evento.nomEvento = this.nomEventoN;
+    this.evento.fecha = this.fechaN;
 
-//   if (this.eventoForm.invalid) return;
 
-//   const formValues = this.eventoForm.value;
+    let formData = new FormData();
 
-//   const data = new FormData(); // Utilizar FormData
+    formData.append('multipartFile', this.evento.multipartFile, this.evento.multipartFile.name);
+    formData.append('detalles', this.evento.detalles);
+    formData.append('idOrganizador', this.evento.idOrganizador);
+    formData.append('cantBoletos', this.evento.cantBoletos);
+    formData.append('costo', this.evento.costo);
+    formData.append('ubicacion', this.evento.ubicacion);
+    formData.append('nomEvento', this.evento.nomEvento);
+    formData.append('fecha', this.convertirFecha(this.evento.fecha));
 
-//   data.append('nomEvento', formValues.nomEvento ? formValues.nomEvento : '');
-//   data.append('fecha', formValues.fecha ? formValues.fecha : '');
-//   data.append('ubicacion', formValues.ubicacion ? formValues.ubicacion : '');
-//   data.append('detalles', formValues.detalles ? formValues.detalles : '');
-//   data.append('costo', formValues.costo ? formValues.costo : '');
-//   data.append('cantBoleto', formValues.cantBoleto ? formValues.cantBoleto : '');
-//   data.append('estatus', '0'); // Establecer el estatus en 0
-//   data.append('idOrganizador', idUsuario.toString()); // Convertir a cadena
 
-//   // Obtener el archivo seleccionado
-//   const archivoSeleccionado = (event.target as HTMLInputElement).files[0];
+    this.creadorService.crearEvento(formData).subscribe((data:any) => {
+      console.log(data)
 
-//   // Agregar imagen solo si se selecciona
-//   if (archivoSeleccionado) {
-//     data.append('imagenFile', archivoSeleccionado, archivoSeleccionado.name);
-//   }
+      const nuevoEvento: EventoRequest = data; // Asegúrate de que el formato coincida
+      this.creadorService.crearEvento(nuevoEvento);
 
-//   this.creadorService.crearEvento(data).subscribe(() => {
-//     console.log('Evento creado con exito');
-//     Swal.fire({
-//       position: 'center',
-//       icon: 'success',
-//       title: 'Evento creado correctamente',
-//       showConfirmButton: false,
-//       timer: 1500
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Evento creado correctamente',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    })
+    this.router.navigate(['/creador']);
+  }
 
-      
-//     });
-//     this.router.navigate(['/creador']);
-//   });
-// }
 
-  
   
 }

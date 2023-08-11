@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ApiResponse ,EventosResponse } from '../shared/models/administrador';
@@ -24,15 +24,12 @@ export class CreadorService {
 //     .pipe(catchError( (error) => this.handlerError(error)));
 //   }
 
-  crearEvento(evento: EventoRequest, imagen: File): Observable<Response<EventoEntity>> {
-    
-
-    const formData = new FormData();
-    formData.append('imagen', imagen);
-    formData.append('evento', JSON.stringify(evento));
-
-    return this.http.post<Response<EventoEntity>>(`${ environment.baseUrl }/evento/guardarEvento`, formData);
+  crearEvento(evento): Observable<Response<EventoRequest>> {
+    let headers = new HttpHeaders();
+    headers = headers.append('enctype', 'multipart/form-data');
+    return this.http.post<Response<EventoRequest>>(`${ environment.baseUrl }/evento/guardarEvento`, evento, { headers: headers });
   }
+
 
   // crearEvento(eventoFormData: FormData): Observable<any> {
   //   return this.http.post(`${ environment.baseUrl }/evento/guardarEvento`, eventoFormData)

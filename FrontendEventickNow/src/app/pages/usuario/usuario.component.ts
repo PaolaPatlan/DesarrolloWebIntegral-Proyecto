@@ -42,6 +42,8 @@ export class UsuarioComponent {
   }
 
   ngOnInit(): void {
+    this.userService.eventos$.subscribe((eventos) => {
+      this.eventos = eventos;
     this.eventosTodos();
   }
 
@@ -100,6 +102,7 @@ export class UsuarioComponent {
       this.eventos.forEach((evento) => {
         this.getBase64Image(evento.imagen).then((imageUrl) => {
           evento.imagen = imageUrl;
+          evento.bytesImagen = imageUrl;
         });
       });
     });

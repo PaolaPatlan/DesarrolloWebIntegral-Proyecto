@@ -1,9 +1,9 @@
-
+<form [formGroup]="eventoForm" (ngSubmit)="crearEvento()"></form>
     <div>
       <!-- nombre evento -->
     <mat-form-field appearance="fill">
       <mat-label>Nombre Evento</mat-label>
-      <input   matInput [formControl]="nomEvento"  [(ngModel)]="evento.nomEvento" [errorStateMatcher]="matcher"  type="text" placeholder="Paola Guadalupe" maxlength="30" >
+      <input   matInput [formControl]="nomEvento"  [(ngModel)]="nomEventoN" name="nomEventoN"  type="text" placeholder="Paola Guadalupe" maxlength="30" >
       <mat-error *ngIf="nomEvento.hasError('nombreEstudiante') && !nomEvento.hasError('required')">
         Ingrese Nombre del Evento
        </mat-error>
@@ -16,7 +16,7 @@
       <!-- fecha -->
     <mat-form-field appearance="fill">
       <mat-label>Fecha</mat-label>
-      <input type="date"  matInput [formControl]="fecha"  [(ngModel)]="evento.fecha" [errorStateMatcher]="matcher"   maxlength="30" >
+      <input type="date"  matInput [formControl]="fecha"  [(ngModel)]="fechaN" name="fechaN" [errorStateMatcher]="matcher"   maxlength="30" >
       <mat-error *ngIf="fecha.hasError('nombreEstudiante') && !fecha.hasError('required')">
         Ingresa La Fecha
        </mat-error>
@@ -29,9 +29,9 @@
       <!-- estatus -->
     <mat-form-field appearance="fill">
       <mat-label>Estatus</mat-label>
-      <input   matInput [formControl]="estatus"  [(ngModel)]="evento.estatus" [errorStateMatcher]="matcher"  type="text" placeholder="Paola Guadalupe" maxlength="30" >
+      <input   matInput [formControl]="estatus"  [(ngModel)]="estatusN" name="estatusN" [errorStateMatcher]="matcher"  type="number" placeholder="Paola Guadalupe" maxlength="30" >
       <mat-error *ngIf="estatus.hasError('nombreEstudiante') && !estatus.hasError('required')">
-        Ingrese Nombre Estudiante
+        Ingrese el Estatus 
        </mat-error>
        <mat-error *ngIf="estatus.hasError('required')">
          El nombre es <strong>requerido</strong>
@@ -41,10 +41,10 @@
     <div>
       <!--costo -->
     <mat-form-field appearance="fill">
-      <mat-label>Nombre Estudiante</mat-label>
-      <input   matInput [formControl]="costo"  [(ngModel)]="evento.costo" [errorStateMatcher]="matcher"  type="number"  >
+      <mat-label>Costo del boleto</mat-label>
+      <input   matInput [formControl]="costo"  [(ngModel)]="costoN" [errorStateMatcher]="matcher"  type="number"  >
       <mat-error *ngIf="costo.hasError('nombreEstudiante') && !costo.hasError('required')">
-        Ingrese Nombre Estudiante
+        Ingrese el costo del boleto
        </mat-error>
        <mat-error *ngIf="costo.hasError('required')">
          El nombre es <strong>requerido</strong>
@@ -54,10 +54,10 @@
     <div>
       <!-- cant boletos -->
     <mat-form-field appearance="fill">
-      <mat-label>Nombre Estudiante</mat-label>
-      <input   matInput [formControl]="cantBoletos"  [(ngModel)]="evento.cantBoletos" [errorStateMatcher]="matcher"  type="number" >
+      <mat-label>Cantidad de boletos</mat-label>
+      <input   matInput [formControl]="cantBoletos"  [(ngModel)]="cantBoletosN" [errorStateMatcher]="matcher"  type="number" >
       <mat-error *ngIf="cantBoletos.hasError('nombreEstudiante') && !cantBoletos.hasError('required')">
-        Ingrese Nombre Estudiante
+        Ingrese la cantidad de boletos
        </mat-error>
        <mat-error *ngIf="cantBoletos.hasError('required')">
          El nombre es <strong>requerido</strong>
@@ -68,7 +68,7 @@
       <!-- UBICACION -->
     <mat-form-field appearance="fill">
       <mat-label>Ubicacion</mat-label>
-      <input   matInput [formControl]="ubicacion"  [(ngModel)]="evento.ubicacion" [errorStateMatcher]="matcher"  type="text" maxlength="30" >
+      <input   matInput [formControl]="ubicacion"  [(ngModel)]="ubicacionN" [errorStateMatcher]="matcher"  type="text" maxlength="30" >
       <mat-error *ngIf="ubicacion.hasError('nombreEstudiante') && !ubicacion.hasError('required')">
         Ingrese Nombre Estudiante
        </mat-error>
@@ -81,7 +81,7 @@
       <!-- detalles -->
     <mat-form-field appearance="fill">
       <mat-label>Detalles</mat-label>
-      <input   matInput [formControl]="detalles"  [(ngModel)]="evento.detalles" [errorStateMatcher]="matcher"  type="text"  maxlength="30" >
+      <input   matInput [formControl]="detalles" [(ngModel)]="detallesN" name="detallesN" id="detallesN"  [errorStateMatcher]="matcher"  type="text"  maxlength="30" >
       <mat-error *ngIf="detalles.hasError('nombreEstudiante') && !detalles.hasError('required')">
         Ingrese Nombre Estudiante
        </mat-error>
@@ -90,37 +90,17 @@
        </mat-error>
     </mat-form-field>
     </div>
-
     <div>
-      <!-- organizador -->
-    <mat-form-field appearance="fill">
-      <mat-label>Organizador</mat-label>
-      <input   matInput [formControl]="idOrganizador"  [(ngModel)]="evento.idOrganizador" [errorStateMatcher]="matcher"  type="number"  maxlength="30" >
-      <mat-error *ngIf="idOrganizador.hasError('nombreEstudiante') && !idOrganizador.hasError('required')">
-        Ingrese Nombre Estudiante
-       </mat-error>
-       <mat-error *ngIf="idOrganizador.hasError('required')">
-         El nombre es <strong>requerido</strong>
-       </mat-error>
-    </mat-form-field>
     </div>
     <div>
       <!-- Imagen -->
-      <input  id="cargaImagen"  name="cargaImagen" aria-label="cargaImagen" [(ngModel)]="fileField" required="required"
-      (change)="selectFile($event)" type="file" onchange="console.log(event.target.files)"  #fileUpload  class="file-input"/>
-  
-      <div class="file-upload">
-  
-        {{fileField || "Foto estudiante No cargada."}}
-     
-         <button mat-mini-fab color="primary" class="upload-btn"
-           (click)="fileUpload.click()">
-             <mat-icon>attach_file</mat-icon>
-     
-         </button>
-     
-     </div>
-     <button mat-raised-button (click)="crearEvento()">Guardar Información </button>
+      <div class="w-100 mt-2">
+        <div class="image-upload-container">
+            <input type="file" id="multipartFile" formControlName="multipartFile" fileAccept="image/*"
+              (change)="onFileSelected($event)">
+            <label for="multipartFile"><i class="fas fa-camera"></i>Foto de perfil</label>
+            <img id="previewImage" class="mt-2" style="max-width: 200px;">
+          </div>
     </div>
-    
-  
+     <button mat-raised-button  (click)="crearEvento()" >Guardar Información </button>
+    </div>
