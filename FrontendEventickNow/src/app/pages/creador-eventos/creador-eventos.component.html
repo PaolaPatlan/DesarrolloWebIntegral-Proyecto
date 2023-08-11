@@ -1,2 +1,31 @@
-<!-- Botón para crear un nuevo evento -->
-  <button mat-button style="color: aliceblue;" routerLink="crearEvento" mat-button>Nuevo evento</button>
+
+<!-- Botones para los filtros de búsqueda -->
+<mat-card id="topBar">
+  <mat-card-content id="barBtn">
+    <button id="btnTodos" mat-raised-button color="primary" (click)="eventosTodos()">Todos</button>
+    <button id="btnTodos" mat-raised-button color="primary" >Crear Evento</button>
+  </mat-card-content>
+</mat-card>
+
+<div>
+  <!-- Cards para los eventos creados -->
+  <div class="example-card" *ngFor="let evento of eventos">
+    <mat-card id="matH">
+      <mat-card-header >
+        <mat-card-title>{{evento.nomEvento}}</mat-card-title>
+        <mat-card-subtitle>Fecha: {{evento.fecha | date:'yyyy-MM-dd'}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Ciudad: {{evento.ubicacion}}</p>
+        <p>
+          Descripción: {{evento.detalles}}
+        </p>
+        <p>Cantidad de lugares: {{evento.cantBoletos}}</p>
+        <p>Costo: ${{evento.costo}}</p>
+        <p *ngIf="evento.estatus === 0">Estatus del evento: No aprobado</p>
+        <p *ngIf="evento.estatus === 1">Estatus del evento: Aprobado</p>
+        <img id="imagen" [src]="evento.imagen" alt="Evento Image" *ngIf="evento.imagen">
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

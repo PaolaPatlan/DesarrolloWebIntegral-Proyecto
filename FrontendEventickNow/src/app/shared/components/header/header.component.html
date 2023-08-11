@@ -1,6 +1,7 @@
 <mat-toolbar class="mat-elevation-z6">
     <span routerLink="">EventickNow</span>
     <span class="example-spacer"></span>
-    <button routerLink="registro" mat-button>Registrarme</button>
-    <button routerLink="login" mat-button>Iniciar sesión</button>
+    <button *ngIf="!isLogin()"  routerLink="registro" mat-button>Registrarme</button>
+    <button *ngIf="!isLogin()" routerLink="login" mat-button>Iniciar sesión</button>
+    <button *ngIf="isLogin()" (click)="logout()" mat-button>Cerrar sesión</button>
 </mat-toolbar>

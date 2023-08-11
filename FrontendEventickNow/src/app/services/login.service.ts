@@ -2,14 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { BehaviorSubject, Observable, catchError, map, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map, of, throwError } from 'rxjs';
 import { JwtDto } from '../shared/models/jwt-dto';
+import { environment } from 'src/environments/environment';
 
 //Declarar la constante helper para el token
 const helper = new JwtHelperService;
-// Declaracion de la constante baseURL para la conexion hacia el back end con httpClient
-const baseURL = "http://localhost:8080"
-
 
 @Injectable({
   providedIn: 'root'
@@ -39,15 +37,28 @@ export class LoginService {
       localStorage.setItem("token", token);
     }
 
+    //AUTHGUARDS
+    getAuthToken(): Observable<boolean>{
+      return of(true);
+    }
+
+ // Método para verificar si el usuario ha iniciado sesión
+ isAuthenticated(): boolean {
+  const token = this.tokenValue;
+  if (token) {
+    return !helper.isTokenExpired(token);
+  }
+  return false;
+}
+
 //LOGUEO DE USUARIO 
     login(loginData:any): Observable<JwtDto|any>{
-      return this.http.post<JwtDto>(`${ baseURL }/auth/login`,loginData).pipe(
+      return this.http.post<JwtDto>(`${environment.baseUrl}/auth/login`,loginData).pipe(
         map( (data:JwtDto) => {
           if(data.token){
             this.saveLocalStorage(data.token);
             this.token.next(data.token);
             const decoded= helper.decodeToken(data.token);
-            console.log(decoded);
 
             //ADMINISTRADOR 
             if(decoded.sub == 0){
@@ -61,10 +72,6 @@ export class LoginService {
             if(decoded.sub == 2){
               this.router.navigate(['usuario']);
             }
-            //this.router.navigate(['home']);
-            
-  
-
           }
           return data;
         }),
@@ -73,20 +80,14 @@ export class LoginService {
       
     }
 
-                // Metodo para el signin en el formulario
+    // Metodo para el signin en el formulario
     signInUser(user) {
-      return this.http.post<JwtDto>(baseURL + "/signin", user).pipe(
+      return this.http.post<JwtDto>(`${environment.baseUrl}/signin`, user).pipe(
         map((user: JwtDto) => {
           console.log(user);
-          // if (user.code == 0) {
-          //   this.saveLocalStorage(user);
-          //   this.token.next(true);
-          // }
-  
           return user;
         })
       );
-      //return this.http.post<any>(this.URL + '/signin', user);
     }
   
 
@@ -105,7 +106,6 @@ export class LoginService {
           this.logout();
         }else{
           this.token.next(token);
-  
           //renovar los datos del perfil
           const { iat, exp, ...data} = helper.decodeToken(token);
           this.tokenData.next(data);
@@ -122,20 +122,10 @@ export class LoginService {
    */
   handlerError(error:any):Observable<never>{
     let message = "Ha ocurrido un error";
-
-
     if (error) {
       message = `${error.error.message}`;
     }
     console.log('Handle Error ' + message);
-
-
-    // this.snackBar.open(message, '', {
-    //   duration: 5*1000,
-    //   panelClass: ['error-snackbar'],
-    //   horizontalPosition: 'right',
-    //   verticalPosition: 'top'
-    // });
     return throwError(message);
   }
 }
