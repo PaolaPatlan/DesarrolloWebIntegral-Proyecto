@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit{
     //Aplica las validaciones necesarias para el formulario de registro registerForm
     this.loginForm = this.fb.group({
       correoElectronico: ['',[Validators.required,Validators.email]],
-      password: ['',[Validators.required,Validators.maxLength(10)]],
+      password: ['',[Validators.required,Validators.maxLength(9)]],
 
     })
   }

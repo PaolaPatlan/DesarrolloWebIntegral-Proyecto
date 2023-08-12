@@ -37,13 +37,26 @@ export class CrearEventoComponent implements OnInit {
   ubicacionN: any;
   idOrganizadorN: any;
 
-  nomEvento = new FormControl('', [Validators.required]);
+  nomEvento = new FormControl('', 
+  [Validators.required,
+    Validators.minLength(3),
+    Validators.maxLength(30),
+    Validators.pattern('^[A-Za-z s]*$')]);
+
   fecha = new FormControl('', [Validators.required]);
-  estatus = new FormControl('');
+  estatus = new FormControl(0);
   costo = new FormControl('', [Validators.required]);
   cantBoletos = new FormControl('', [Validators.required]);
-  ubicacion = new FormControl('', [Validators.required]);
-  detalles = new FormControl('', [Validators.required]);
+  ubicacion = new FormControl('', 
+  [Validators.required,
+    Validators.minLength(10),
+    Validators.maxLength(80),
+    Validators.pattern('^[A-Za-z s]*$')]);
+  detalles = new FormControl('', 
+  [Validators.required,
+    Validators.minLength(3),
+    Validators.maxLength(500),
+    Validators.pattern('^[A-Za-z s]*$')]);
   idOrganizador = new FormControl('', [Validators.required]);
   matcher = new ErrorStateMatcher();
 
@@ -98,7 +111,7 @@ export class CrearEventoComponent implements OnInit {
 
   crearEvento() {
 
-    this.evento.idOrganizador = 11;
+    this.evento.idOrganizador = +localStorage.getItem('idUsuario'); 
     this.evento.detalles = this.detallesN
     this.evento.cantBoletos = this.cantBoletosN;
     this.evento.costo = this.costoN;

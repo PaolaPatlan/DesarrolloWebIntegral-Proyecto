@@ -1,56 +1,40 @@
-
 <mat-grid-list cols="1" rowHeight="100%" class="fondo">
   <mat-grid-tile cols="2">
     <mat-card [class.mat-elevation-z8]="true">
       <mat-card-content id="matForm">
         <h2 id="title" style="text-align: center;"> Iniciar Sesión</h2>
-      <div style="width: 400px; height: 250px;">
-        <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <div style="width: 400px; height: 250px;">
+          <form [formGroup]="loginForm" (ngSubmit)="login()">
 
-          <div style="text-align: center;">
-          <!-- CORREO ELECTRONICO -->
-          <mat-form-field class="full-width" appearance="outline" style="width: 350px;">
-            <mat-label>Correo electronico</mat-label>
-            <input type="email" formControlName="correoElectronico" matInput />
-            <mat-error
-              *ngIf="baseForm.isValidField(loginForm.get('correoElectronico'))"
-            >
-              {{ baseForm.getErrorMessage(loginForm.get("correoElectronico")) }}
-            </mat-error>
-          </mat-form-field>
-          </div>
+            <div style="text-align: center;">
+              <!-- CORREO ELECTRONICO -->
+              <mat-form-field class="full-width" appearance="outline" style="width: 350px;">
+                <mat-label>Correo electronico</mat-label>
+                <input type="email" formControlName="correoElectronico" matInput />
+                <mat-error *ngIf="baseForm.isValidField(loginForm.get('correoElectronico'))">
+                  {{ baseForm.getErrorMessage(loginForm.get("correoElectronico")) }}
+                </mat-error>
+              </mat-form-field>
+            </div>
 
-          <!-- CONTRASEÑA -->
-          <div style="text-align: center;">
-          <mat-form-field class="full-width" appearance="outline"  style="width: 350px;">
-            <mat-label>Contraseña</mat-label>
-            <input maxlength="10"
-              [type]="'password'"
-              formControlName="password"
-              matInput  
-            />
-            <mat-error
-              *ngIf="baseForm.isValidField(loginForm.get('password'))"
-            >
-              {{ baseForm.getErrorMessage(loginForm.get("password")) }}
-            </mat-error>
-          </mat-form-field>
+            <!-- CONTRASEÑA -->
+            <div style="text-align: center;">
+              <mat-form-field class="full-width" appearance="outline" style="width: 350px;">
+                <mat-label>Contraseña</mat-label>
+                <input minlength="8" maxlength="9" [type]="'password'" formControlName="password" matInput />
+                <mat-error *ngIf="baseForm.isValidField(loginForm.get('password'))">
+                  {{ baseForm.getErrorMessage(loginForm.get("password")) }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div style="text-align: center;">
+              <button type="submit" mat-raised-button color="primary" id="btn" [disabled]="!loginForm.valid">
+                Iniciar Sesión
+              </button>
+            </div>
+          </form>
         </div>
-        <div style="text-align: center;">
-          <button
-            type="submit"
-            mat-raised-button
-            color="primary"
-            id="btn"
-            [disabled]="!loginForm.valid"
-          >
-            Iniciar Sesión
-          </button>
-        </div>
-        </form>
-      </div>
       </mat-card-content>
     </mat-card>
   </mat-grid-tile>
 </mat-grid-list>
-

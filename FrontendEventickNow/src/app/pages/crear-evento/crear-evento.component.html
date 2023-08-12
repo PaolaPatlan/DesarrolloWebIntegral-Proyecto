@@ -1,106 +1,118 @@
-<form [formGroup]="eventoForm" (ngSubmit)="crearEvento()"></form>
-    <div>
-      <!-- nombre evento -->
-    <mat-form-field appearance="fill">
-      <mat-label>Nombre Evento</mat-label>
-      <input   matInput [formControl]="nomEvento"  [(ngModel)]="nomEventoN" name="nomEventoN"  type="text" placeholder="Paola Guadalupe" maxlength="30" >
-      <mat-error *ngIf="nomEvento.hasError('nombreEstudiante') && !nomEvento.hasError('required')">
-        Ingrese Nombre del Evento
-       </mat-error>
-       <mat-error *ngIf="nomEvento.hasError('required')">
-         El nombre es <strong>requerido</strong>
-       </mat-error>
-    </mat-form-field>
-    </div>
-    <div>
-      <!-- fecha -->
-    <mat-form-field appearance="fill">
-      <mat-label>Fecha</mat-label>
-      <input type="date"  matInput [formControl]="fecha"  [(ngModel)]="fechaN" name="fechaN" [errorStateMatcher]="matcher"   maxlength="30" >
-      <mat-error *ngIf="fecha.hasError('nombreEstudiante') && !fecha.hasError('required')">
-        Ingresa La Fecha
-       </mat-error>
-       <mat-error *ngIf="fecha.hasError('required')">
-         la fecha es <strong>requerido</strong>
-       </mat-error>
-    </mat-form-field>
-    </div>
-    <div>
-      <!-- estatus -->
-    <mat-form-field appearance="fill">
-      <mat-label>Estatus</mat-label>
-      <input   matInput [formControl]="estatus"  [(ngModel)]="estatusN" name="estatusN" [errorStateMatcher]="matcher"  type="number" placeholder="Paola Guadalupe" maxlength="30" >
-      <mat-error *ngIf="estatus.hasError('nombreEstudiante') && !estatus.hasError('required')">
-        Ingrese el Estatus 
-       </mat-error>
-       <mat-error *ngIf="estatus.hasError('required')">
-         El nombre es <strong>requerido</strong>
-       </mat-error>
-    </mat-form-field>
-    </div>
-    <div>
-      <!--costo -->
-    <mat-form-field appearance="fill">
-      <mat-label>Costo del boleto</mat-label>
-      <input   matInput [formControl]="costo"  [(ngModel)]="costoN" [errorStateMatcher]="matcher"  type="number"  >
-      <mat-error *ngIf="costo.hasError('nombreEstudiante') && !costo.hasError('required')">
-        Ingrese el costo del boleto
-       </mat-error>
-       <mat-error *ngIf="costo.hasError('required')">
-         El nombre es <strong>requerido</strong>
-       </mat-error>
-    </mat-form-field>
-    </div>
-    <div>
-      <!-- cant boletos -->
-    <mat-form-field appearance="fill">
-      <mat-label>Cantidad de boletos</mat-label>
-      <input   matInput [formControl]="cantBoletos"  [(ngModel)]="cantBoletosN" [errorStateMatcher]="matcher"  type="number" >
-      <mat-error *ngIf="cantBoletos.hasError('nombreEstudiante') && !cantBoletos.hasError('required')">
-        Ingrese la cantidad de boletos
-       </mat-error>
-       <mat-error *ngIf="cantBoletos.hasError('required')">
-         El nombre es <strong>requerido</strong>
-       </mat-error>
-    </mat-form-field>
-    </div>
-    <div>
-      <!-- UBICACION -->
-    <mat-form-field appearance="fill">
-      <mat-label>Ubicacion</mat-label>
-      <input   matInput [formControl]="ubicacion"  [(ngModel)]="ubicacionN" [errorStateMatcher]="matcher"  type="text" maxlength="30" >
-      <mat-error *ngIf="ubicacion.hasError('nombreEstudiante') && !ubicacion.hasError('required')">
-        Ingrese Nombre Estudiante
-       </mat-error>
-       <mat-error *ngIf="ubicacion.hasError('required')">
-         El nombre es <strong>requerido</strong>
-       </mat-error>
-    </mat-form-field>
-    </div>
-    <div>
-      <!-- detalles -->
-    <mat-form-field appearance="fill">
-      <mat-label>Detalles</mat-label>
-      <input   matInput [formControl]="detalles" [(ngModel)]="detallesN" name="detallesN" id="detallesN"  [errorStateMatcher]="matcher"  type="text"  maxlength="30" >
-      <mat-error *ngIf="detalles.hasError('nombreEstudiante') && !detalles.hasError('required')">
-        Ingrese Nombre Estudiante
-       </mat-error>
-       <mat-error *ngIf="detalles.hasError('required')">
-         El nombre es <strong>requerido</strong>
-       </mat-error>
-    </mat-form-field>
-    </div>
-    <div>
-    </div>
-    <div>
-      <!-- Imagen -->
-      <div class="w-100 mt-2">
-        <div class="image-upload-container">
-            <input type="file" id="multipartFile" formControlName="multipartFile" fileAccept="image/*"
-              (change)="onFileSelected($event)">
-            <label for="multipartFile"><i class="fas fa-camera"></i>Foto de perfil</label>
-            <img id="previewImage" class="mt-2" style="max-width: 200px;">
+<mat-grid-list cols="1" rowHeight="100%" class="fondo">
+  <mat-grid-tile cols="2">
+    <mat-card [class.mat-elevation-z8]="true">
+      <mat-card-content id="matForm">
+        <h2 id="title" style="text-align: center;"> Crear Evento</h2>
+        <div class="form">
+          <form [formGroup]="eventoForm" (ngSubmit)="crearEvento()">
+          <div>
+            <!-- nombre evento -->
+            <mat-form-field appearance="outline">
+              <mat-label>Nombre Evento</mat-label>
+              <input matInput [formControl]="nomEvento" [(ngModel)]="nomEventoN" name="nomEventoN" type="text" maxlength="30" required>
+              <mat-error *ngIf="nomEvento.hasError('nomEventoN') && !nomEvento.hasError('required')">
+                Ingrese Nombre del Evento
+              </mat-error>
+              <mat-error *ngIf="nomEvento.hasError('required')">
+                El nombre es <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
           </div>
-    </div>
-     <button mat-raised-button  (click)="crearEvento()" >Guardar Información </button>
-    </div>
+          <div>
+            <!-- fecha -->
+            <mat-form-field appearance="outline">
+              <mat-label>Fecha</mat-label>
+              <input type="date" matInput [formControl]="fecha" [(ngModel)]="fechaN" name="fechaN"
+                [errorStateMatcher]="matcher" maxlength="30" required>
+              <mat-error *ngIf="fecha.hasError('fechaN') && !fecha.hasError('required')">
+                Ingresa La Fecha
+              </mat-error>
+              <mat-error *ngIf="fecha.hasError('required')">
+                la fecha es <strong>requerida</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div>
+            <!--costo -->
+            <mat-form-field appearance="outline">
+              <mat-label>Costo del boleto</mat-label>
+              <input matInput [formControl]="costo" [(ngModel)]="costoN" [errorStateMatcher]="matcher" type="number" required>
+              <mat-error *ngIf="costo.hasError('costoN') && !costo.hasError('required')">
+                Ingrese el costo del boleto
+              </mat-error>
+              <mat-error *ngIf="costo.hasError('required')">
+                El nombre es <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div>
+            <!-- cant boletos -->
+            <mat-form-field appearance="outline">
+              <mat-label>Cantidad de boletos</mat-label>
+              <input matInput [formControl]="cantBoletos" [(ngModel)]="cantBoletosN" [errorStateMatcher]="matcher"
+                type="number">
+              <mat-error *ngIf="cantBoletos.hasError('cantBoletosN') && !cantBoletos.hasError('required')">
+                Ingrese la cantidad de boletos
+              </mat-error>
+              <mat-error *ngIf="cantBoletos.hasError('required')">
+                La cantidad es <strong>requerida</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div>
+            <!-- UBICACION -->
+            <mat-form-field appearance="outline">
+              <mat-label>Ubicación</mat-label>
+              <input matInput [formControl]="ubicacion" [(ngModel)]="ubicacionN" [errorStateMatcher]="matcher"
+                type="text" maxlength="30">
+              <mat-error *ngIf="ubicacion.hasError('ubicacionN') && !ubicacion.hasError('required')">
+                Ingrese la ubicación
+              </mat-error>
+              <mat-error *ngIf="ubicacion.hasError('required')">
+                La ubicación es <strong>requerida</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div>
+            <!-- detalles -->
+            <mat-form-field appearance="outline">
+              <mat-label>Detalles</mat-label>
+              <input matInput [formControl]="detalles" [(ngModel)]="detallesN" name="detallesN" id="detallesN"
+                [errorStateMatcher]="matcher" type="text" maxlength="30">
+              <mat-error *ngIf="detalles.hasError('detallesN') && !detalles.hasError('required')">
+                Ingrese Nombre Estudiante
+              </mat-error>
+              <mat-error *ngIf="detalles.hasError('required')">
+                El nombre es <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div>
+          </div>
+          <div>
+            <!-- Imagen -->
+            <div class="w-100 mt-2">
+              <div class="image-upload-container" class="file-select" >
+                
+                  <mat-label>Imagen descriptiva</mat-label>
+                  <br>
+              
+                <input type="file" id="multipartFile"  formControlName="multipartFile" fileAccept="image/*"
+                  (change)="onFileSelected($event)">
+                <label for="multipartFile"><i class="fas fa-camera"></i>Imagen descriptiva</label>
+                <br><br>
+                <img id="previewImage" class="mt-2" style="max-width: 200px;">
+                <br><br>
+              
+              </div>
+
+            </div>
+            <button mat-raised-button (click)="crearEvento()" color="primary" id="btn" [disabled]="!eventoForm.valid">Guardar Información </button>
+          
+          </div>
+        </form>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
