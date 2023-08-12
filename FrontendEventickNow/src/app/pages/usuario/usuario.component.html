@@ -1,2 +1,82 @@
-<h1>Bienvendio Usuario General</h1>
+<!-- Botones para los filtros de búsqueda -->
+<mat-card id="topBar">
+  <mat-card-content id="barBtn">
+    <mat-form-field appearance="outline" class="search-input">
+      <input
+        matInput
+        placeholder="Buscar eventos"
+        [(ngModel)]="terminoBusqueda"
+        (input)="realizarBusqueda()"
+      />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </mat-card-content>
+</mat-card>
+
+<div style="float: right; margin-top: 30px; margin-right: 100px;">
+  <div style="width: 380px;" #paymentRef></div>
+</div>
+<div>
+  <div class="example-card" *ngFor="let resultado of resultadosBusqueda"  >
+    <div *ngIf="resultadosBusqueda.length > 0">
+      <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{ resultado.nomEvento }}</mat-card-title>
+        <mat-card-subtitle
+          >Fecha: {{ resultado.fecha | date : "yyyy-MM-dd" }}</mat-card-subtitle
+        >
+      </mat-card-header>
+        <mat-card-content>
+          <img
+            id="imagen"
+            [src]="resultado.imagen"
+            alt="Evento Image"
+            *ngIf="resultado.imagen"
+          />
+          <p>Ciudad: {{ resultado.ubicacion }}</p>
+          <p>Descripción: {{ resultado.detalles }}</p>
+          <p>Costo por boleto: ${{ resultado.costo }}</p>
+          <mat-form-field class="example-ripple-form-field">
+            <mat-label>Cantidad de boletos</mat-label>
+            <input matInput [(ngModel)]="resultado.numEven" type="number" (ngModelChange)="actualizarTotal(resultado.idEvento,resultado.numEven,resultado.costo)"/>
+          </mat-form-field>
+          <p>Total: ${{ totalCosto }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Cards para los eventos creados -->
+  <div class="example-card" *ngFor="let evento of eventos">
+    <div *ngIf="resultadosBusqueda.length <= 0">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{ evento.nomEvento }}</mat-card-title>
+          <mat-card-subtitle
+            >Fecha: {{ evento.fecha | date : "yyyy-MM-dd" }}</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <img
+            id="imagen"
+            [src]="evento.imagen"
+            alt="Evento Image"
+            *ngIf="evento.imagen"
+          />
+          <p>Ciudad: {{ evento.ubicacion }}</p>
+          <p>Descripción: {{ evento.detalles }}</p>
+          <p>Costo por boleto: ${{ evento.costo }}</p>
+          <mat-form-field class="example-ripple-form-field">
+            <mat-label>Cantidad de boletos</mat-label>
+            <input matInput [(ngModel)]="evento.numEven" type="number" (ngModelChange)="actualizarTotal(evento.idEvento,evento.numEven,evento.costo)" min="1" pattern="^[0-9]+"/>
+          </mat-form-field>
+          <p>Total: ${{ totalCosto }}</p>  
+                  
+        </mat-card-content>
+      </mat-card>
+      
+    </div>
+  </div>
+            
+</div>
 

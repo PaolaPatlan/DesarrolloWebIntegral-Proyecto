@@ -14,7 +14,13 @@ import { AdministradorComponent } from './pages/administrador/administrador.comp
 import { CreadorEventosComponent } from './pages/creador-eventos/creador-eventos.component';
 import { UsuarioComponent } from './pages/usuario/usuario.component';
 import { ConfirmacionComponent } from './pages/confirmacion/confirmacion.component';
+import { CrearEventoComponent } from './pages/crear-evento/crear-evento.component';
 
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatIconModule } from "@angular/material/icon";
+import { MatInputModule } from "@angular/material/input";
+import {MatCardModule} from '@angular/material/card';
+import {MatSelectModule} from '@angular/material/select';
 
 
 @NgModule({
@@ -23,6 +29,7 @@ import { ConfirmacionComponent } from './pages/confirmacion/confirmacion.compone
     RegistroUsuarioComponent,
     AdministradorComponent,
     CreadorEventosComponent,
+    CrearEventoComponent,
     UsuarioComponent,
     ConfirmacionComponent,
     LoginComponent,
@@ -36,7 +43,13 @@ import { ConfirmacionComponent } from './pages/confirmacion/confirmacion.compone
     MaterialModule, // Modulo donde se encuentran los componentes de angular material
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSelectModule,
+    MatCardModule,
+    MatInputModule,
+    MatIconModule,
+    MatFormFieldModule
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

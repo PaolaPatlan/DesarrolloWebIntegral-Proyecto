@@ -9,10 +9,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
@@ -38,7 +40,7 @@ public class EventoEntity implements Serializable{
 	private String nomEvento;
 	
 	@Column(name = "FECHA")
-	private Date fecha;
+	private String fecha;
 	
 	@Column(name = "UBICACION", nullable = false, length = 100)
 	private String ubicacion;
@@ -55,11 +57,19 @@ public class EventoEntity implements Serializable{
 	@Column(name = "CANT_BOLETOS", nullable = false)
 	private Integer cantBoletos;
 	
-	@Column(name = "IMAGEN", length = 8388608)
-	private byte[] imagen;
+	@Column(name = "NOMBRE_IMAGEN", length = 100)
+	private String nombreImagen;
+	
+	@Column(name = "TIPO_IMAGEN", length = 100)
+	private String tipoImagen;
 	
 	@Transient
-    private MultipartFile imagenFile;
+	private transient MultipartFile multipartFile;
+//	@Transient
+//  private MultipartFile imagenFile;
+	
+	@Column(name = "IMAGEN", length = 8388608)
+	private byte[] imagen;
 	
 	
 	@ManyToOne

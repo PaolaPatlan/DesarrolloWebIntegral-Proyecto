@@ -1,3 +1,4 @@
+
 export interface ApiResponse {
     list: EventosResponse[]; // An array of EventosResponse
 
@@ -14,8 +15,6 @@ export interface EventosResponse {
     ubicacion: string;
     detalles: string;
     imagen: string;
-    bytesImagen: string;
     imagenFile: null;
-    numEven: number;
 
 }

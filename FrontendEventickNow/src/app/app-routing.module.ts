@@ -7,7 +7,8 @@ import { AdministradorComponent } from './pages/administrador/administrador.comp
 import { CreadorEventosComponent } from './pages/creador-eventos/creador-eventos.component';
 import { UsuarioComponent } from './pages/usuario/usuario.component';
 import { ConfirmacionComponent } from './pages/confirmacion/confirmacion.component';
-
+import { CrearEventoComponent } from './pages/crear-evento/crear-evento.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -26,15 +27,23 @@ const routes: Routes = [
   {
    
     path: 'administrador',
-    component: AdministradorComponent
+    component: AdministradorComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'creador', 
-    component: CreadorEventosComponent
+    component: CreadorEventosComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'creador/crearEvento', 
+    component: CrearEventoComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'usuario', 
-    component: UsuarioComponent
+    component: UsuarioComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'confirmar/:correo', 
