@@ -40,7 +40,7 @@ export class ConfirmacionComponent implements OnInit{
       data.correoElectronico = params['correo'];
 
       this.registroService.confirmUser(data).subscribe(() => {
-        console.log('Usuario confirmado con exito');
+        console.log('Usuario confirmado con éxito');
 
       });
 
@@ -49,7 +49,7 @@ export class ConfirmacionComponent implements OnInit{
     Swal.fire({
       position: 'center',
       icon: 'success',
-      title: 'Tú cuenta ha sido activada',
+      title: 'Tu cuenta ha sido activada',
       showConfirmButton: false,
       timer: 3000
     })

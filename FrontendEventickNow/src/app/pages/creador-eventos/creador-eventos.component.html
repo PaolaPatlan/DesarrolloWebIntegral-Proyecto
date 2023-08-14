@@ -18,8 +18,7 @@
         <p>
           Descripción: {{evento.detalles}}
         </p>
-        <p>Cantidad de lugares: {{evento.cantBoletos}}</p>
-        <p>Costo: ${{evento.costo}}</p>
+        <p>Costo del boleto: ${{evento.costo}}</p>
         <p *ngIf="evento.estatus === 0">Estatus del evento: No aprobado</p>
         <p *ngIf="evento.estatus === 1">Estatus del evento: Aprobado</p>
         <img id="imagen" [src]="evento.imagen" alt="Evento Image" *ngIf="evento.imagen">

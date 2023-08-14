@@ -92,7 +92,6 @@ export class RegistroUsuarioComponent implements OnInit {
     })
     this.router.navigate(['/']);
     this.registroService.newUser(data).subscribe(() => {
-      console.log('Usuario creado con exito');
       
     });
   }

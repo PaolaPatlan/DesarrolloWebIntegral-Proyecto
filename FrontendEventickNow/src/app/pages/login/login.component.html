@@ -9,7 +9,7 @@
             <div style="text-align: center;">
               <!-- CORREO ELECTRONICO -->
               <mat-form-field class="full-width" appearance="outline" style="width: 350px;">
-                <mat-label>Correo electronico</mat-label>
+                <mat-label>Correo electrónico</mat-label>
                 <input type="email" formControlName="correoElectronico" matInput />
                 <mat-error *ngIf="baseForm.isValidField(loginForm.get('correoElectronico'))">
                   {{ baseForm.getErrorMessage(loginForm.get("correoElectronico")) }}
